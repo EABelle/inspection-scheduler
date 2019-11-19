@@ -1,0 +1,55 @@
+{
+  "name": "bellegarde-automotores",
+  "version": "1.0.0",
+  "description": "Gestión de automotores",
+  "main": "src/server/index.js",
+  "private": true,
+  "author": "eabelle",
+  "license": "ISC",
+  "scripts": {
+    "start": "node_modules/.bin/npm run start:front && npm run start:server",
+    "build": "node_modules/.bin/react-scripts build",
+    "start:front": "node_modules/.bin/react-scripts start",
+    "start:server": "node_modules/.bin/nodemon src/server/index.js",
+    "test:front": "node_modules/.bin/react-scripts test --env=jsdom",
+    "test:server": "echo \"Error: no test specified\" && exit 1",
+    "install-start": "node_modules/.bin/npm install && npm start",
+    "eject": "node_modules/.bin/react-scripts eject"
+  },
+  "dependencies": {
+    "api-key-validator": "^0.1.6",
+    "apikey": "^0.1.2",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.3",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.2.2",
+    "lodash": "^4.17.5",
+    "material-ui": "^0.20.0",
+    "moment": "^2.22.1",
+    "mongoose": "^5.0.3",
+    "morgan": "^1.9.0",
+    "npm": "^5.6.0",
+    "query-string": "^5.1.0",
+    "randomstring": "^1.1.5",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.4",
+    "redis": "^2.8.0",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.2.0",
+    "sha256": "^0.2.0",
+    "start": "^5.1.0",
+    "universal-cookie": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.12",
+    "redux-logger": "^3.0.6"
+  },
+  "engines": {
+    "node": "8.9.4"
+  }
+}
