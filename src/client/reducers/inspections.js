@@ -1,14 +1,14 @@
-import { FETCH_INSPECTIONS, SET_DEFAULT_INSPECTIONS } from '../actions'
+import { FETCH_INSPECTIONS, SET_DEFAULT_INSPECTIONS } from '../actions';
 
 const inspections = (state = [], action) => {
   switch (action.type) {
     case FETCH_INSPECTIONS:
-      return action.payload
+      return action.payload;
     case SET_DEFAULT_INSPECTIONS:
-      return []
+      return [];
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default inspections
+export default inspections;

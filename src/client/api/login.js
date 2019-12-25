@@ -1,5 +1,5 @@
-import { post } from './index'
+import { post } from './index';
 
 export function login(body) {
-    return post('/login', body)
+  return post('/login', body);
 }

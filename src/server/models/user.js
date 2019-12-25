@@ -1,11 +1,11 @@
-'use strict'
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-var UserSchema = Schema({
-    username: String,
-    password: String
+const { Schema } = mongoose;
+
+const UserSchema = Schema({
+  username: String,
+  password: String,
 });
 
 module.exports = mongoose.model('User', UserSchema);

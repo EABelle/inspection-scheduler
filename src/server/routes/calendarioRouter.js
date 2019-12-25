@@ -1,12 +1,11 @@
-'use strict'
 
-let express = require('express')
-let CalendarioController = require('../controllers/calendarioController');
+const express = require('express');
+const CalendarioController = require('../controllers/calendarioController');
 
-let api = express.Router();
+const api = express.Router();
 
-let authMiddleware = require('../middlewares/auth')
-let apiKeyMiddleware = require('../middlewares/apiKey')
+const authMiddleware = require('../middlewares/auth');
+const apiKeyMiddleware = require('../middlewares/apiKey');
 
 api.get('', authMiddleware, CalendarioController.get);
 api.get('/allAvailabilities', authMiddleware, CalendarioController.getByIgnoreAvailability);

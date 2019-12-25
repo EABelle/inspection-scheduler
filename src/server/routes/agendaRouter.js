@@ -1,9 +1,8 @@
-'use strict'
 
-let express = require('express')
-let AgendaController = require('../controllers/agendaController');
+const express = require('express');
+const AgendaController = require('../controllers/agendaController');
 
-let api = express.Router();
+const api = express.Router();
 
 api.post('', AgendaController.agendar);
 

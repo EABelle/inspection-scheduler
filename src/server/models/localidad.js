@@ -1,11 +1,11 @@
-'use strict'
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-var LocalidadSchema = Schema({
-    nombre: String,
-    cp: String
+const { Schema } = mongoose;
+
+const LocalidadSchema = Schema({
+  nombre: String,
+  cp: String,
 });
 
 module.exports = mongoose.model('Localidad', LocalidadSchema);

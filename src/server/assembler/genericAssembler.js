@@ -1,13 +1,12 @@
-'use strict'
 
-class GenericAssembler{
-    static convertIn(input, output){
-        for(let key of Object.keys(output)){
-            if(input[key]){
-                output[key] = input[key];
-            }
-        }
+class GenericAssembler {
+  static convertIn(input, output) {
+    for (const key of Object.keys(output)) {
+      if (input[key]) {
+        output[key] = input[key];
+      }
     }
-};
+  }
+}
 
 module.exports = GenericAssembler;

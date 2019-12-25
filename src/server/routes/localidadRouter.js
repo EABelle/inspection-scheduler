@@ -1,9 +1,8 @@
-'use strict'
 
-let express = require('express')
-let LocalidadController = require('../controllers/localidadController');
+const express = require('express');
+const LocalidadController = require('../controllers/localidadController');
 
-let api = express.Router();
+const api = express.Router();
 
 api.get('', LocalidadController.get);
 

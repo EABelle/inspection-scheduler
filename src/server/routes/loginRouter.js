@@ -1,9 +1,8 @@
-'use strict'
 
-let express = require('express')
-let LoginController = require('../controllers/loginController');
+const express = require('express');
+const LoginController = require('../controllers/loginController');
 
-let api = express.Router();
+const api = express.Router();
 
 api.post('', LoginController.login);
 

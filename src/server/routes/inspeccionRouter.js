@@ -1,9 +1,8 @@
-'use strict'
 
-let express = require('express')
-let InspeccionController = require('../controllers/inspeccionController');
+const express = require('express');
+const InspeccionController = require('../controllers/inspeccionController');
 
-let api = express.Router();
+const api = express.Router();
 
 api.get('', InspeccionController.get);
 api.post('', InspeccionController.post);

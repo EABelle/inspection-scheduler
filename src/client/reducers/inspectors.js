@@ -1,14 +1,14 @@
-import { FETCH_INSPECTORS, SET_DEFAULT_INSPECTORS } from '../actions'
+import { FETCH_INSPECTORS, SET_DEFAULT_INSPECTORS } from '../actions';
 
 const inspectors = (state = [], action) => {
   switch (action.type) {
     case FETCH_INSPECTORS:
-      return action.payload
+      return action.payload;
     case SET_DEFAULT_INSPECTORS:
-      return []
+      return [];
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default inspectors
+export default inspectors;

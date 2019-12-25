@@ -7,14 +7,16 @@
   "author": "eabelle",
   "license": "ISC",
   "scripts": {
-    "start": "node_modules/.bin/npm run start:front && npm run start:server",
-    "build": "node_modules/.bin/react-scripts build",
-    "start:front": "node_modules/.bin/react-scripts start",
-    "start:server": "node_modules/.bin/nodemon src/server/index.js",
-    "test:front": "node_modules/.bin/react-scripts test --env=jsdom",
+    "start": "npm run start:server && npm run start:front",
+    "build": "react-scripts build",
+    "start:front": "NODE_ENV=development react-scripts start",
+    "start:server": "NODE_ENV=development nodemon src/server/index.js",
+    "test:front": "react-scripts test --env=jsdom",
     "test:server": "echo \"Error: no test specified\" && exit 1",
-    "install-start": "node_modules/.bin/npm install && npm start",
-    "eject": "node_modules/.bin/react-scripts eject"
+    "install-start": "npm install && npm start",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext .jsx,.js src",
+    "pre-commit": "npm run lint"
   },
   "dependencies": {
     "api-key-validator": "^0.1.6",
@@ -30,7 +32,7 @@
     "moment": "^2.22.1",
     "mongoose": "^5.0.3",
     "morgan": "^1.9.0",
-    "npm": "^5.6.0",
+    "qs": "^6.9.1",
     "query-string": "^5.1.0",
     "randomstring": "^1.1.5",
     "react": "^16.3.2",
@@ -40,14 +42,21 @@
     "react-scripts": "1.1.4",
     "redis": "^2.8.0",
     "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "sha256": "^0.2.0",
     "start": "^5.1.0",
     "universal-cookie": "^2.2.0"
   },
   "devDependencies": {
-    "nodemon": "^1.14.12",
-    "redux-logger": "^3.0.6"
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "husky": "^3.1.0",
+    "nodemon": "^1.14.12"
   },
   "engines": {
     "node": "8.9.4"

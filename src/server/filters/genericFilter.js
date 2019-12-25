@@ -1,31 +1,29 @@
-'use strict'
 
-var validator = require('../utils/validate.js')
+const validator = require('../utils/validate.js');
 
-class GenericFilter{
-    constructor(){
-        this.data = {
-        }
+class GenericFilter {
+  constructor() {
+    this.data = {
+    };
+  }
+
+  fillData(data) {
+    for (const key of Object.keys(this.data)) {
+      if (validator.validKey(data[key])) {
+        this.data[key] = data[key];
+      }
     }
+  }
 
-    fillData(data){
-        for(let key of Object.keys(this.data)){
-            if(validator.validKey(data[key])){
-                this.data[key] = data[key];
-            }
-        }
+  filterData() {
+    const filterData = {};
+    for (const key of Object.keys(this.data)) {
+      if (validator.validKey(this.data[key])) {
+        filterData[key] = this.data[key];
+      }
     }
-
-    filterData(){
-        let filterData = {};
-        for(let key of Object.keys(this.data)){
-            if (validator.validKey(this.data[key])){
-                filterData[key] = this.data[key];
-            }
-        }
-        return filterData;
-    }
-
-};
+    return filterData;
+  }
+}
 
 module.exports = GenericFilter;
