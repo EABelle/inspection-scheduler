@@ -7,7 +7,7 @@ class UserDAO {
       console.log('searching user: ', filter);
       User.find(filter).then((users) => {
         if (!users || users.length === 0) {
-          reject(new Error("No users founf"));
+          reject(new Error("No users found"));
         } else {
           resolve(users[0]);
         }
