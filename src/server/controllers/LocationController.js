@@ -1,20 +1,20 @@
 
-const LocalidadService = require('../services/LocationService');
-const LocalidadFilter = require('../filters/LocationFilter');
+const LocationService = require('../services/LocationService');
+const LocationFilter = require('../filters/LocationFilter');
 
 
 class LocationController {
   static get(req, res) {
-    const localidadFilter = new LocalidadFilter();
+    const locationFilter = new LocationFilter();
 
     const { nombre, cp } = req.query;
 
-    localidadFilter.fillData({ nombre, cp });
-    LocalidadService.find(localidadFilter.data)
+    locationFilter.fillData({ nombre, cp });
+    LocationService.find(locationFilter.data)
       .then(
-        (localidad) => {
+        (location) => {
           res.status(200).send({
-            data: localidad,
+            data: location,
           });
         },
       ).catch((err) => res.status(err.code || 400).send(err.message));

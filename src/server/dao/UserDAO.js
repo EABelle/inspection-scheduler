@@ -7,20 +7,19 @@ class UserDAO {
       console.log('searching user: ', filter);
       User.find(filter).then((users) => {
         if (!users || users.length === 0) {
-          reject({ message: 'no se encontró ningún usuario' });
+          reject(new Error("No users founf"));
         } else {
           resolve(users[0]);
         }
-      }).catch(() => { reject({ message: 'no se pudo realizar la busqueda de usuario' }); });
+      }).catch((err) => { reject(err); });
     });
   }
 
   static fetch(id) {
     return new Promise((resolve, reject) => {
       User.findById(id).exec((err, user) => {
-        if (err || !user) {
-          console.log(err);
-          reject({ message: 'No pudo encontrarse el usuario' });
+        if (err) {
+          reject(err);
         } else {
           resolve(user);
         }

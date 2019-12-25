@@ -6,9 +6,9 @@ class CalendarController {
   static get(req, res) {
     const inspectorFilter = new InspectorFilter();
 
-    const { localidad } = req.query;
+    const { location } = req.query;
 
-    inspectorFilter.fillData({ localidades: localidad });
+    inspectorFilter.fillData({ locations: location });
 
     CalendarService.find(inspectorFilter)
       .then(
@@ -23,9 +23,9 @@ class CalendarController {
   static getDaysOnly(req, res) {
     const inspectorFilter = new InspectorFilter();
 
-    const { localidad } = req.query;
+    const { location } = req.query;
 
-    inspectorFilter.fillData({ localidades: localidad });
+    inspectorFilter.fillData({ locations: location });
 
     CalendarService.findDays(inspectorFilter)
       .then(
@@ -40,9 +40,9 @@ class CalendarController {
   static getByIgnoreAvailability(req, res, next) {
     const inspectorFilter = new InspectorFilter();
 
-    const { localidad } = req.query;
+    const { location } = req.query;
 
-    inspectorFilter.fillData({ localidades: localidad });
+    inspectorFilter.fillData({ locations: location });
 
     CalendarController.resolve(
       next,

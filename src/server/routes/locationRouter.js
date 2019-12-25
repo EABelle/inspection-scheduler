@@ -1,9 +1,9 @@
 
 const express = require('express');
-const LocalidadController = require('../controllers/LocationController');
+const LocationController = require('../controllers/LocationController');
 
 const api = express.Router();
 
-api.get('', LocalidadController.get);
+api.get('', LocationController.get);
 
 module.exports = api;

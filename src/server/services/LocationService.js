@@ -1,10 +1,10 @@
-const LocalidadDAO = require('../dao/LocationDAO');
+const LocationDAO = require('../dao/LocationDAO');
 
 class LocationService {
   static get(id) {
     return new Promise((resolve, reject) => {
-      LocalidadDAO.fetch(id)
-        .then((localidad) => resolve(localidad))
+      LocationDAO.fetch(id)
+        .then((location) => resolve(location))
         .catch((err) => {
           reject(err);
         });
@@ -13,7 +13,7 @@ class LocationService {
 
   static find(filterData) {
     return new Promise((resolve, reject) => {
-      LocalidadDAO.find(filterData)
+      LocationDAO.find(filterData)
         .then(resolve)
         .catch(reject);
     });

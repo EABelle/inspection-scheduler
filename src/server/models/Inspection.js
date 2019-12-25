@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 const InspectionSchema = Schema({
   fecha: Date,
   inspector_id: Object,
-  candidatos: Array,
+  candidates: Array,
   titular: Object,
   vehiculo: Object,
   inspection: Object,

@@ -72,7 +72,7 @@ export class Inspections extends React.Component {
               <TableHeaderColumn>Patente</TableHeaderColumn>
               <TableHeaderColumn>Vehículo</TableHeaderColumn>
               <TableHeaderColumn>Dirección</TableHeaderColumn>
-              <TableHeaderColumn>Localidad</TableHeaderColumn>
+              <TableHeaderColumn>Location</TableHeaderColumn>
               <TableHeaderColumn>Horario</TableHeaderColumn>
             </TableRow>
           </TableHeader>

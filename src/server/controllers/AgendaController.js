@@ -17,7 +17,7 @@ class AgendaController {
     data.inspection.dia = transformDateString(data.inspection.dia);
 
     const inspectorFilter = new InspectorFilter();
-    inspectorFilter.fillData({ localidades: data.inspection.localidad });
+    inspectorFilter.fillData({ locations: data.inspection.location });
 
 
     AgendaService.save(data, inspectorFilter)

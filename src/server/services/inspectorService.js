@@ -33,10 +33,10 @@ class InspectorService {
     return dayObject;
   }
 
-  static findAvailableInspector(day, localidad, inspectors_id, inspections) {
+  static findAvailableInspector(day, location, inspectors_id, inspections) {
     return new Promise((resolve, reject) => {
       const inspectorFilter = new InspectorFilter();
-      inspectorFilter.fillData({ localidades: localidad, _id: inspectors_id });
+      inspectorFilter.fillData({ locations: location, _id: inspectors_id });
       this.find(inspectorFilter.filterData())
         .then((inspectors) => {
           let assignedInspector = null;
@@ -69,10 +69,10 @@ class InspectorService {
     });
   }
 
-  static isSomeoneAvailable(inspectors, localidad, dia) {
+  static isSomeoneAvailable(inspectors, location, dia) {
     return new Promise((resolve, reject) => {
       InspectionService.getInspectionsFromInspectors(inspectors)
-        .then(([inspectors, inspections]) => this.findAvailableInspector(dia, localidad, inspectors, inspections))
+        .then(([inspectors, inspections]) => this.findAvailableInspector(dia, location, inspectors, inspections))
         .then(resolve)
         .catch(reject);
     });

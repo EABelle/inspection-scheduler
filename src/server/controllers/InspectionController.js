@@ -9,11 +9,11 @@ class InspectionController {
     const inspectionsFilter = new InspectionsFilter();
 
     const {
-      localidad, day, month, year,
+      location, day, month, year,
     } = req.query;
 
     inspectionsFilter.fillData({
-      localidad, day, month, year,
+      location, day, month, year,
     });
     InspectionService.find(inspectionsFilter.data)
       .then(

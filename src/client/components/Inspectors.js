@@ -142,16 +142,16 @@ class Inspectors extends React.Component {
                   ))}
                 </TableBody>
               </Table>
-              <h3>Localidades</h3>
+              <h3>Locations</h3>
               <div style={styles.chipsWrapper}>
                 {
-                                    uniq(this.state.selectedInspector.localidades).sort().map((localidad) => (
+                                    uniq(this.state.selectedInspector.locations).sort().map((location) => (
                                       <Chip
-                                        key={localidad}
+                                        key={location}
                                         style={styles.chip}
                                         onRequestDelete={() => {}}
                                       >
-                                        {localidad}
+                                        {location}
                                       </Chip>
                                     ))
                                 }

@@ -1,29 +1,29 @@
 
-const Localidad = require('../models/localidad');
+const Location = require('../models/Location');
 
 class LocationDAO {
   static find(filter) {
     return new Promise((resolve, reject) => {
       const query = filter && filter.cp && filter.nombre ? { $or: [{ cp: filter.cp }, { nombre: filter.nombre }] } : filter;
       console.log(query);
-      Localidad.find(query).then((localidades) => {
-        if (!localidades) {
-          reject({ message: 'no se encontró ninguna localidad' });
+      Location.find(query).then((locations) => {
+        if (!locations) {
+          reject({ message: 'no se encontró ninguna location' });
         } else {
-          resolve(localidades);
+          resolve(locations);
         }
-      }).catch(() => { reject({ message: 'no se pudo realizar la busqueda de localidad' }); });
+      }).catch(() => { reject({ message: 'no se pudo realizar la busqueda de location' }); });
     });
   }
 
   static fetch(id) {
     return new Promise((resolve, reject) => {
-      Localidad.findById(id).exec((err, localidad) => {
-        if (err || !localidad) {
+      Location.findById(id).exec((err, location) => {
+        if (err || !location) {
           console.log(err);
-          reject({ message: 'No pudo encontrarse la localidad' });
+          reject({ message: 'No pudo encontrarse la location' });
         } else {
-          resolve(localidad);
+          resolve(location);
         }
       });
     });

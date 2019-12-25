@@ -1,6 +1,6 @@
 [
     {
-        "localidades":[
+        "locations":[
             "FLORIDA",
             "JUAN B.JUSTO",
             "PUENTE SAAVEDRA",
@@ -98,7 +98,7 @@
         "maximo":20
     },
     {
-        "localidades":[
+        "locations":[
             "FLORIDA",
             "JUAN B.JUSTO",
             "PUENTE SAAVEDRA",
@@ -185,7 +185,7 @@
         "maximo": 10
     },
     {
-        "localidades":[
+        "locations":[
             "REMEDIOS DE ESCALADA",
             "VALENTIN ALSINA",
             "GERLI",
@@ -262,7 +262,7 @@
         "maximo": 20
     },
     {
-        "localidades":[
+        "locations":[
             "REMEDIOS DE ESCALADA",
             "VALENTIN ALSINA",
             "GERLI",
@@ -335,7 +335,7 @@
         "maximo": 20
     },
     {
-        "localidades":[
+        "locations":[
             "REMEDIOS DE ESCALADA",
             "VALENTIN ALSINA",
             "GERLI",

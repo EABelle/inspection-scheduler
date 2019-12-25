@@ -5,14 +5,14 @@ class InspectorFilter extends GenericFilter {
   constructor() {
     super();
     this.data = Object.assign(this.data, {
-      localidades: null, // solo es una localidad, esta en plural para machear con el del dao
+      locations: null, // solo es una location, esta en plural para machear con el del dao
     });
   }
 
   fillData(data) {
     super.fillData(data);
-    if (data.localidades) {
-      this.data.localidades = data.localidades;
+    if (data.locations) {
+      this.data.locations = data.locations;
     }
     if (data._id) {
       this.data._id = { $in: data._id };

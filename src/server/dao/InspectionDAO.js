@@ -5,33 +5,22 @@ class InspectionDAO {
   static find(filter) {
     return new Promise((resolve, reject) => {
       Inspection.find(filter).then((inspections) => {
-        if (!inspections) {
-          reject({ message: 'no se encontró ninguna inspección' });
-        } else {
-          resolve(inspections);
-        }
-      }).catch(() => { reject({ message: 'no se pudo realizar la busqueda de inspección' }); });
-    });
-  }
+        resolve(inspections);
+      }).catch((err) => {reject(err)}); });
+    }
 
   static findWithInspectors(inspectors, filter) {
     return new Promise((resolve, reject) => {
       Inspection.find(filter).then((inspections) => {
-        if (!inspections) {
-          reject({ message: 'no se encontró ninguna inspección' });
-        } else {
-          resolve([inspectors, inspections]);
-        }
-      }).catch(() => { reject({ message: 'no se pudo realizar la busqueda de inspección' }); });
-    });
-  }
+        resolve([inspectors, inspections]);
+      }).catch((err) => { reject(err); }); });
+    }
 
   static fetch(id) {
     return new Promise((resolve, reject) => {
       Inspection.findById(id).exec((err, inspection) => {
-        if (err || !inspection) {
-          console.log(err);
-          reject({ message: 'No pudo encontrarse la inspection' });
+        if (err) {
+          reject(err);
         } else {
           resolve(inspection);
         }
@@ -43,12 +32,11 @@ class InspectionDAO {
     return new Promise((resolve, reject) => {
       const inspection = new Inspection(inspectionData);
       inspection.save((err, inspection) => {
-        if (err || !inspection) {
-          console.log(err);
-          reject({ message: 'no pudo guardarse la inspección' });
+        if (err) {
+          reject(err);
         } else {
           const {
-            _id, candidatos, inspector_id, __v, ...rest
+            _id, candidates, inspector_id, __v, ...rest
           } = inspection.toJSON();
           resolve(rest);
         }

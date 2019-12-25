@@ -6,25 +6,20 @@ const { addDays, buildDate, transformDateString } = require('../utils/formatDate
 class InspectorDAO {
   static find(filter) {
     return new Promise((resolve, reject) => {
-      const query = !filter.localidades && !filter.id ? undefined : filter;
+      const query = !filter.locations && !filter.id ? undefined : filter;
       Inspector.find(query)
         .then((inspectors) => {
-          if (!inspectors) {
-            reject({ message: 'no se encontraron inspectors' });
-          } else {
             resolve(inspectors);
-          }
         })
-        .catch(() => { reject({ message: 'no se pudo realizar la búsqueda' }); });
+        .catch((error) => { reject(error); });
     });
   }
 
   static fetch(id) {
     return new Promise((resolve, reject) => {
       Inspector.findById(id).exec((err, inspector) => {
-        if (err || !inspector) {
-          console.log(err);
-          reject({ message: 'No pudo encontrarse el inspector' });
+        if (err) {
+          reject(err);
         } else {
           resolve(inspector);
         }
@@ -39,9 +34,8 @@ class InspectorDAO {
       inspector.habilitar = habilitar.map((date) => (buildDate(transformDateString(date))));
       inspector.inhabilitar = inhabilitar.map((date) => (buildDate(transformDateString(date))));
       inspector.save((err, inspector) => {
-        if (err || !inspector) {
-          console.log(err);
-          reject({ message: 'no pudo guardarse el inspector' });
+        if (err) {
+          reject(err);
         } else {
           resolve(inspector);
         }
@@ -73,9 +67,8 @@ class InspectorDAO {
 
     return new Promise((resolve, reject) => {
       Inspector.findByIdAndUpdate(id, dtoUpdate).exec((err, inspector2) => {
-        if (err || !inspector2) {
-          console.log(err);
-          reject({ message: 'error interno' });
+        if (err) {
+          reject(err);
         } else {
           resolve(inspector2);
         }
@@ -86,11 +79,10 @@ class InspectorDAO {
   static delete(id) {
     return new Promise((resolve, reject) => {
       Inspector.findByIdAndRemove(id).exec((err, deleted) => {
-        if (err || !deleted) {
-          console.log(err);
-          reject({ message: 'no se puede borrar el inspector' });
+        if (err) {
+          reject(err);
         } else {
-          resolve('eliminado');
+          resolve(deleted);
         }
       });
     });

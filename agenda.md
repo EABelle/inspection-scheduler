@@ -10,7 +10,7 @@ Expone dos endpoints; uno para consultar la disponibilidad para realizar la insp
 
 ## Endpoints
 
-### {{baseUrl}}/calendar/horarios?localidad=:localidad&cp=:cp
+### {{baseUrl}}/calendar/horarios?location=:location&cp=:cp
 
 #### Método: GET
 
@@ -19,7 +19,7 @@ Expone dos endpoints; uno para consultar la disponibilidad para realizar la insp
 
 #### Params
 Se debe enviar al menos uno de los dos:
-  - **localidad**
+  - **location**
   - **cp**
 
 #### Respuesta:
@@ -82,8 +82,8 @@ Request body:
     },
     "inspection": {
     	"direccion": string, // *OBLIGATORIO*
-    	"localidad": string, // *opcional* en caso de que sea provisto el código postal
-		"codigo_postal": string, // *opcional* en caso de que sea provista la localidad
+    	"location": string, // *opcional* en caso de que sea provisto el código postal
+		"codigo_postal": string, // *opcional* en caso de que sea provista la location
     	"provincia": string,
     	"dia": "DD|MM|AAAA", // *OBLIGATORIO* se toma como fecha válida una fecha desde la actual hasta 5 días posterior
     	"horario": string // *OBLIGATORIO* la hora inicial, sin minutos

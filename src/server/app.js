@@ -13,7 +13,7 @@ const calendarRouter = require('./routes/calendarRouter');
 const agendaRouter = require('./routes/agendaRouter');
 const inspectorRouter = require('./routes/inspectorRouter');
 const inspectionRouter = require('./routes/inspectionRouter');
-const localidadRouter = require('./routes/locationRouter');
+const locationRouter = require('./routes/locationRouter');
 const loginRouter = require('./routes/loginRouter');
 const authMiddleware = require('./middlewares/auth');
 
@@ -55,8 +55,7 @@ app.use('/schedule', apiKeyMiddleware, agendaRouter);
 
 app.use('/inspectors', authMiddleware, inspectorRouter);
 app.use('/inspections', authMiddleware, inspectionRouter);
-// app.use('/localidad', authMiddleware, localidadRouter);
-app.use('/localidad', localidadRouter);
+app.use('/location', locationRouter);
 
 const dev = app.get('env') !== 'production';
 if (!dev) {
