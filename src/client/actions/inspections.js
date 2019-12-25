@@ -19,7 +19,7 @@ export function loadInspectionsFail() {
 export function fetchInspections(filters) {
 
     return (dispatch) => {
-        let url = '/api/inspections'
+        let url = '/inspections'
         const query = filters ? `?${qs.stringify(filters)}` : ''
         return get(`${url}${query}`)
         .then(response => dispatch(loadInspectionsSuccess(response.data.data)))

@@ -15,7 +15,7 @@ function _forceAvailability(data, action) {
     if( !inspectorId || !date ) {
         return new Promise((resolve, reject) => reject("Missing parameters"))
     }
-    const url = `api/inspectors/${inspectorId}`
+    const url = `inspectors/${inspectorId}`
     const body = {
         [action]: date,
         set
