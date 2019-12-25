@@ -34,9 +34,9 @@ ReactDOM.render(
     <App>
       <Switch>
         <Route exact path="/" component={Login} />
-        <PrivateRoute path="/inspectores" component={Inspectors} />
-        <PrivateRoute path="/calendario" component={Calendar} />
-        <PrivateRoute path="/inspecciones" component={Inspections} />
+        <PrivateRoute path="/inspectors" component={Inspectors} />
+        <PrivateRoute path="/calendar" component={Calendar} />
+        <PrivateRoute path="/inspections" component={Inspections} />
       </Switch>
     </App>
   </BrowserRouter>,

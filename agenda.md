@@ -4,13 +4,13 @@
 
 ## Uso
 
-Expone dos endpoints; uno para consultar la disponibilidad para realizar la inspección por parte del estudio, según la zona en la que se realizará, y otro para agendar la inspección.
+Expone dos endpoints; uno para consultar la disponibilidad para realizar la inspección por parte del estudio, según la zona en la que se realizará, y otro para schedule la inspección.
 
 *Las url's base de cada ambiente y las api keys serán provistas por el estudio.*
 
 ## Endpoints
 
-### {{baseUrl}}/calendario/horarios?localidad=:localidad&cp=:cp
+### {{baseUrl}}/calendar/horarios?localidad=:localidad&cp=:cp
 
 #### Método: GET
 
@@ -62,7 +62,7 @@ Devuelve los días que el estudio tiene disponible para cubrir la inspección en
 	}
 ```
 
-### {{baseUrl}}/agendar
+### {{baseUrl}}/schedule
 
 #### Método: POST
 
@@ -80,7 +80,7 @@ Request body:
     	"telefono_1": number, // *OBLIGATORIO*
     	"telefono_2": number
     },
-    "inspeccion": {
+    "inspection": {
     	"direccion": string, // *OBLIGATORIO*
     	"localidad": string, // *opcional* en caso de que sea provisto el código postal
 		"codigo_postal": string, // *opcional* en caso de que sea provista la localidad

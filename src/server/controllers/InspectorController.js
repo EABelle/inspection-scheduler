@@ -1,7 +1,7 @@
 
 const InspectorService = require('../services/inspectorService');
-const InspectorFilter = require('../filters/inspectorFilter');
-const InspectorDTO = require('../dto/inspectorDTO');
+const InspectorFilter = require('../filters/InspectorFilter');
+const InspectorDTO = require('../dto/InspectorDTO');
 
 
 class InspectorController {

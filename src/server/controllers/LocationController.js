@@ -1,9 +1,9 @@
 
-const LocalidadService = require('../services/localidadService');
-const LocalidadFilter = require('../filters/localidadFilter');
+const LocalidadService = require('../services/LocationService');
+const LocalidadFilter = require('../filters/LocationFilter');
 
 
-class LocalidadController {
+class LocationController {
   static get(req, res) {
     const localidadFilter = new LocalidadFilter();
 
@@ -21,4 +21,4 @@ class LocalidadController {
   }
 }
 
-module.exports = LocalidadController;
+module.exports = LocationController;

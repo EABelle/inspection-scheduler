@@ -1,6 +1,6 @@
 
 const express = require('express');
-const InspectorController = require('../controllers/inspectorController');
+const InspectorController = require('../controllers/InspectorController');
 
 const api = express.Router();
 

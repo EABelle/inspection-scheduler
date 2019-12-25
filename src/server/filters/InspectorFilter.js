@@ -1,5 +1,5 @@
 
-const GenericFilter = require('./genericFilter');
+const GenericFilter = require('./GenericFilter');
 
 class InspectorFilter extends GenericFilter {
   constructor() {

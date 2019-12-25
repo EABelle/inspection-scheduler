@@ -1,8 +1,8 @@
 
-const CalendarioService = require('../services/calendarioService');
-const InspectorFilter = require('../filters/inspectorFilter');
+const CalendarService = require('../services/CalendarService');
+const InspectorFilter = require('../filters/InspectorFilter');
 
-class CalendarioController {
+class CalendarController {
   static get(req, res) {
     const inspectorFilter = new InspectorFilter();
 
@@ -10,11 +10,11 @@ class CalendarioController {
 
     inspectorFilter.fillData({ localidades: localidad });
 
-    CalendarioService.find(inspectorFilter)
+    CalendarService.find(inspectorFilter)
       .then(
-        (calendario) => {
+        (calendar) => {
           res.send({
-            data: calendario,
+            data: calendar,
           });
         },
       ).catch((err) => res.status(err.code || 400).send(err.message));
@@ -27,11 +27,11 @@ class CalendarioController {
 
     inspectorFilter.fillData({ localidades: localidad });
 
-    CalendarioService.findDays(inspectorFilter)
+    CalendarService.findDays(inspectorFilter)
       .then(
-        (calendario) => {
+        (calendar) => {
           res.send({
-            data: calendario,
+            data: calendar,
           });
         },
       ).catch((err) => res.status(err.code || 400).send(err.message));
@@ -44,12 +44,12 @@ class CalendarioController {
 
     inspectorFilter.fillData({ localidades: localidad });
 
-    CalendarioController.resolve(
+    CalendarController.resolve(
       next,
-      CalendarioService.findByIgnoreAvailability(inspectorFilter),
-      (calendario) => {
+      CalendarService.findByIgnoreAvailability(inspectorFilter),
+      (calendar) => {
         res.send({
-          data: calendario,
+          data: calendar,
         });
       },
     );
@@ -57,4 +57,4 @@ class CalendarioController {
 }
 
 
-module.exports = CalendarioController;
+module.exports = CalendarController;

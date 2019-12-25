@@ -103,7 +103,7 @@ class Inspectors extends React.Component {
                 </TableRowColumn>
                 <TableRowColumn>
                   {inspector.maximo}
-                  {' inspecciones'}
+                  {' inspections'}
                 </TableRowColumn>
                 <TableRowColumn>
                   {this.getDateDetail(inspector)}

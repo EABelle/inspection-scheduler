@@ -1,5 +1,5 @@
 
-const Inspector = require('../models/inspector');
+const Inspector = require('../models/Inspector');
 
 const { addDays, buildDate, transformDateString } = require('../utils/formatDate');
 
@@ -8,11 +8,11 @@ class InspectorDAO {
     return new Promise((resolve, reject) => {
       const query = !filter.localidades && !filter.id ? undefined : filter;
       Inspector.find(query)
-        .then((inspectores) => {
-          if (!inspectores) {
-            reject({ message: 'no se encontraron inspectores' });
+        .then((inspectors) => {
+          if (!inspectors) {
+            reject({ message: 'no se encontraron inspectors' });
           } else {
-            resolve(inspectores);
+            resolve(inspectors);
           }
         })
         .catch(() => { reject({ message: 'no se pudo realizar la búsqueda' }); });

@@ -1,26 +1,26 @@
 
-const Inspeccion = require('../models/inspeccion');
+const Inspection = require('../models/Inspection');
 
-class InspeccionDAO {
+class InspectionDAO {
   static find(filter) {
     return new Promise((resolve, reject) => {
-      Inspeccion.find(filter).then((inspecciones) => {
-        if (!inspecciones) {
+      Inspection.find(filter).then((inspections) => {
+        if (!inspections) {
           reject({ message: 'no se encontró ninguna inspección' });
         } else {
-          resolve(inspecciones);
+          resolve(inspections);
         }
       }).catch(() => { reject({ message: 'no se pudo realizar la busqueda de inspección' }); });
     });
   }
 
-  static findWithInspectors(inspectores, filter) {
+  static findWithInspectors(inspectors, filter) {
     return new Promise((resolve, reject) => {
-      Inspeccion.find(filter).then((inspecciones) => {
-        if (!inspecciones) {
+      Inspection.find(filter).then((inspections) => {
+        if (!inspections) {
           reject({ message: 'no se encontró ninguna inspección' });
         } else {
-          resolve([inspectores, inspecciones]);
+          resolve([inspectors, inspections]);
         }
       }).catch(() => { reject({ message: 'no se pudo realizar la busqueda de inspección' }); });
     });
@@ -28,28 +28,28 @@ class InspeccionDAO {
 
   static fetch(id) {
     return new Promise((resolve, reject) => {
-      Inspeccion.findById(id).exec((err, inspeccion) => {
-        if (err || !inspeccion) {
+      Inspection.findById(id).exec((err, inspection) => {
+        if (err || !inspection) {
           console.log(err);
-          reject({ message: 'No pudo encontrarse la inspeccion' });
+          reject({ message: 'No pudo encontrarse la inspection' });
         } else {
-          resolve(inspeccion);
+          resolve(inspection);
         }
       });
     });
   }
 
-  static save(inspeccionData) {
+  static save(inspectionData) {
     return new Promise((resolve, reject) => {
-      const inspeccion = new Inspeccion(inspeccionData);
-      inspeccion.save((err, inspeccion) => {
-        if (err || !inspeccion) {
+      const inspection = new Inspection(inspectionData);
+      inspection.save((err, inspection) => {
+        if (err || !inspection) {
           console.log(err);
           reject({ message: 'no pudo guardarse la inspección' });
         } else {
           const {
             _id, candidatos, inspector_id, __v, ...rest
-          } = inspeccion.toJSON();
+          } = inspection.toJSON();
           resolve(rest);
         }
       });
@@ -57,4 +57,4 @@ class InspeccionDAO {
   }
 }
 
-module.exports = InspeccionDAO;
+module.exports = InspectionDAO;

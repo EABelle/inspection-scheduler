@@ -7,14 +7,14 @@ import './Menu.css';
 const Menu = ({ open, onToggle }) => (
   <Drawer open={open} onRequestChange={onToggle} docked={false}>
     <div className="drawer-title"> </div>
-    <Link to="/inspectores">
-      <MenuItem onClick={onToggle} style={{ textAlign: 'left' }}>Inspectores</MenuItem>
+    <Link to="/inspectors">
+      <MenuItem onClick={onToggle} style={{ textAlign: 'left' }}>Inspectors</MenuItem>
     </Link>
-    <Link to="/calendario">
-      <MenuItem onClick={onToggle} style={{ textAlign: 'left' }}>Calendario</MenuItem>
+    <Link to="/calendar">
+      <MenuItem onClick={onToggle} style={{ textAlign: 'left' }}>Calendar</MenuItem>
     </Link>
-    <Link to="/inspecciones">
-      <MenuItem onClick={onToggle} style={{ textAlign: 'left' }}>Inspecciones</MenuItem>
+    <Link to="/inspections">
+      <MenuItem onClick={onToggle} style={{ textAlign: 'left' }}>Inspections</MenuItem>
     </Link>
   </Drawer>
 );

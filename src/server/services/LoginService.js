@@ -1,7 +1,7 @@
 
 const jwt = require('jsonwebtoken');
 const redis = require('redis');
-const UserDAO = require('../dao/userDAO');
+const UserDAO = require('../dao/UserDAO');
 const redisClient = require('../redisClient');
 
 

@@ -4,9 +4,9 @@ import FlatButton from 'material-ui/FlatButton';
 import Cookies from 'universal-cookie';
 
 const titles = {
-  calendario: 'Calendario de inspectores',
-  inspecciones: 'Listado de inspecciones',
-  inspectores: 'Inspectores',
+  calendar: 'Calendar de inspectors',
+  inspections: 'Listado de inspections',
+  inspectors: 'Inspectors',
 };
 
 const AppBar = ({ onOpenMenu, location, history }) => {

@@ -111,7 +111,7 @@ class Calendar extends React.Component {
     const { day, month, year } = this.state;
     const formattedDate = day && month && year ? `${day}|${month}|${year}` : null;
     const availableInspectors = formattedDate && this.props.calendar[formattedDate]
-      ? this.props.calendar[formattedDate].inspectores
+      ? this.props.calendar[formattedDate].inspectors
       : [];
 
     const availableInspectorsArray = Object.keys(availableInspectors).map((inspector) => ({
@@ -132,7 +132,7 @@ class Calendar extends React.Component {
         />
 
         <Toggle
-          label="Sólo inspectores disponibles"
+          label="Sólo inspectors disponibles"
           defaultToggled
           onToggle={this.handleToggle}
           style={styles.toggle}
@@ -144,7 +144,7 @@ class Calendar extends React.Component {
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn>Nombre y Apellido</TableHeaderColumn>
-              <TableHeaderColumn>Inspecciones restantes</TableHeaderColumn>
+              <TableHeaderColumn>Inspections restantes</TableHeaderColumn>
               <TableHeaderColumn>Habilitar</TableHeaderColumn>
               <TableHeaderColumn>Inhabilitar</TableHeaderColumn>
             </TableRow>

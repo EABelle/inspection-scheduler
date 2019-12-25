@@ -1,6 +1,6 @@
-const LocalidadDAO = require('../dao/localidadDAO');
+const LocalidadDAO = require('../dao/LocationDAO');
 
-class LocalidadService {
+class LocationService {
   static get(id) {
     return new Promise((resolve, reject) => {
       LocalidadDAO.fetch(id)
@@ -19,4 +19,4 @@ class LocalidadService {
     });
   }
 }
-module.exports = LocalidadService;
+module.exports = LocationService;

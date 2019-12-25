@@ -8,9 +8,9 @@ const {
 
 const InspectorService = require('./inspectorService');
 
-const InspectionService = require('./inspectionService');
+const InspectionService = require('./InspectionService');
 
-class CalendarioService {
+class CalendarService {
   static formatDays(fromFecha) {
     let days = {};
     for (let day = 0; day <= 5; day++) {
@@ -20,20 +20,20 @@ class CalendarioService {
       days = {
         ...days,
         [formattedDate]: {
-          inspectores: {},
+          inspectors: {},
         },
       };
     }
     return days;
   }
 
-  static fillWithInspectors(days, fromFecha, inspectores, onlyAvailables) {
+  static fillWithInspectors(days, fromFecha, inspectors, onlyAvailables) {
     for (let day = 0; day <= 5; day++) {
       const currentFecha = new Date(fromFecha);
       currentFecha.setDate(fromFecha.getDate() + day);
       const formattedDate = formatDate(currentFecha);
       const dayOfTheWeek = currentFecha.getDay();
-      inspectores.forEach((inspector) => {
+      inspectors.forEach((inspector) => {
         inspector = inspector.toJSON();
         if (
           (
@@ -43,7 +43,7 @@ class CalendarioService {
           )
                     && inspector.horarios.find((dayData) => (dayData.dia === dayOfTheWeek))
         ) {
-          days[formattedDate].inspectores[inspector._id] = {
+          days[formattedDate].inspectors[inspector._id] = {
             inhabilitar: !!inspector.inhabilitar.find((fecha) => matchDate(formatDate(fecha), formattedDate)),
             habilitar: !!inspector.habilitar.find(
               (fecha) => matchDate(formatDate(fecha), formattedDate),
@@ -59,7 +59,7 @@ class CalendarioService {
 
   static getHours(calendar) {
     const dates = Object.keys(calendar);
-    return Promise.all(dates.map((date) => this.getDayHours(calendar[date].inspectores, date)));
+    return Promise.all(dates.map((date) => this.getDayHours(calendar[date].inspectors, date)));
   }
 
   static getDayHours(inspectors, date) {
@@ -85,30 +85,30 @@ class CalendarioService {
     }));
   }
 
-  static deleteUnavailableInspectors(days, inspecciones) {
-    inspecciones.forEach(({ fecha, inspector_id }) => {
+  static deleteUnavailableInspectors(days, inspections) {
+    inspections.forEach(({ fecha, inspector_id }) => {
       const formattedDate = [fecha.getDate(), fecha.getMonth(), fecha.getFullYear()].join('|');
       const dayIndex = days[formattedDate];
-      if (dayIndex && dayIndex.inspectores && dayIndex.inspectores[inspector_id]) {
-        if (dayIndex.inspectores[inspector_id].inhabilitar) {
-          unset(dayIndex.inspectores, inspector_id);
-        } else if (!dayIndex.inspectores[inspector_id].habilitar) {
-          dayIndex.inspectores[inspector_id].maximo--;
-          if (dayIndex.inspectores[inspector_id].maximo <= 0) {
-            unset(dayIndex.inspectores, inspector_id);
+      if (dayIndex && dayIndex.inspectors && dayIndex.inspectors[inspector_id]) {
+        if (dayIndex.inspectors[inspector_id].inhabilitar) {
+          unset(dayIndex.inspectors, inspector_id);
+        } else if (!dayIndex.inspectors[inspector_id].habilitar) {
+          dayIndex.inspectors[inspector_id].maximo--;
+          if (dayIndex.inspectors[inspector_id].maximo <= 0) {
+            unset(dayIndex.inspectors, inspector_id);
           }
         }
       }
     });
   }
 
-  static countAvailability(days, inspecciones) {
-    inspecciones.forEach(({ fecha, inspector_id }) => {
+  static countAvailability(days, inspections) {
+    inspections.forEach(({ fecha, inspector_id }) => {
       const formattedDate = [fecha.getDate(), fecha.getMonth(), fecha.getFullYear()].join('|');
       const dayIndex = days[formattedDate];
-      if (dayIndex && dayIndex.inspectores && dayIndex.inspectores[inspector_id]) {
-        if (!dayIndex.inspectores[inspector_id].habilitar) {
-          dayIndex.inspectores[inspector_id].maximo--;
+      if (dayIndex && dayIndex.inspectors && dayIndex.inspectors[inspector_id]) {
+        if (!dayIndex.inspectors[inspector_id].habilitar) {
+          dayIndex.inspectors[inspector_id].maximo--;
         }
       }
     });
@@ -116,7 +116,7 @@ class CalendarioService {
 
   static deleteDaysWithNoInspectors(days) {
     for (const prop in days) {
-      if (isEmpty(days[prop].inspectores)) {
+      if (isEmpty(days[prop].inspectors)) {
         unset(days, prop);
       }
     }
@@ -130,23 +130,23 @@ class CalendarioService {
     });
   }
 
-  static getCalendar(inspectores, inspecciones) {
+  static getCalendar(inspectors, inspections) {
     return new Promise((resolve) => {
       const fromFecha = new Date();
       const days = this.formatDays(fromFecha);
-      this.fillWithInspectors(days, fromFecha, inspectores, true);
-      this.deleteUnavailableInspectors(days, inspecciones);
+      this.fillWithInspectors(days, fromFecha, inspectors, true);
+      this.deleteUnavailableInspectors(days, inspections);
       this.deleteDaysWithNoInspectors(days);
       resolve(this.formatMonths(days));
     });
   }
 
-  static getCalendarAllAvailabilities(inspectores, inspecciones) {
+  static getCalendarAllAvailabilities(inspectors, inspections) {
     return new Promise((resolve) => {
       const fromFecha = new Date();
       const days = this.formatDays(fromFecha);
-      this.fillWithInspectors(days, fromFecha, inspectores);
-      this.countAvailability(days, inspecciones);
+      this.fillWithInspectors(days, fromFecha, inspectors);
+      this.countAvailability(days, inspections);
       resolve(this.formatMonths(days));
     });
   }
@@ -154,8 +154,8 @@ class CalendarioService {
   static find(inspectorFilter) {
     return new Promise((resolve, reject) => {
       InspectorService.find(inspectorFilter.filterData())
-        .then((inspectores) => InspectionService.getInspectionsFromInspectors(inspectores))
-        .then(([inspectores, inspecciones]) => this.getCalendar(inspectores, inspecciones))
+        .then((inspectors) => InspectionService.getInspectionsFromInspectors(inspectors))
+        .then(([inspectors, inspections]) => this.getCalendar(inspectors, inspections))
         .then(resolve)
         .catch(reject);
     });
@@ -164,9 +164,9 @@ class CalendarioService {
   static findDays(inspectorFilter) {
     return new Promise((resolve, reject) => {
       InspectorService.find(inspectorFilter.filterData())
-        .then((inspectores) => InspectionService.getInspectionsFromInspectors(inspectores))
-        .then(([inspectores, inspecciones]) => this.getCalendar(inspectores, inspecciones))
-        .then((calendario) => this.getHours(calendario))
+        .then((inspectors) => InspectionService.getInspectionsFromInspectors(inspectors))
+        .then(([inspectors, inspections]) => this.getCalendar(inspectors, inspections))
+        .then((calendar) => this.getHours(calendar))
         .then((days) => days.reduce((acc, x) => {
           for (const key in x) acc[key] = x[key];
           return acc;
@@ -179,12 +179,12 @@ class CalendarioService {
   static findByIgnoreAvailability(inspectorFilter) {
     return new Promise((resolve, reject) => {
       InspectorService.find(inspectorFilter.filterData())
-        .then((inspectores) => InspectionService.getInspectionsFromInspectors(inspectores))
-        .then(([inspectores, inspecciones]) => this.getCalendarAllAvailabilities(inspectores, inspecciones))
+        .then((inspectors) => InspectionService.getInspectionsFromInspectors(inspectors))
+        .then(([inspectors, inspections]) => this.getCalendarAllAvailabilities(inspectors, inspections))
         .then(resolve)
         .catch(reject);
     });
   }
 }
 
-module.exports = CalendarioService;
+module.exports = CalendarService;

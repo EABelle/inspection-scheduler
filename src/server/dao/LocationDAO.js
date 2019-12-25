@@ -1,7 +1,7 @@
 
 const Localidad = require('../models/localidad');
 
-class LocalidadDAO {
+class LocationDAO {
   static find(filter) {
     return new Promise((resolve, reject) => {
       const query = filter && filter.cp && filter.nombre ? { $or: [{ cp: filter.cp }, { nombre: filter.nombre }] } : filter;
@@ -30,4 +30,4 @@ class LocalidadDAO {
   }
 }
 
-module.exports = LocalidadDAO;
+module.exports = LocationDAO;

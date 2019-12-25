@@ -1,8 +1,8 @@
-const InspectionService = require('./inspectionService');
-const InspectorDAO = require('../dao/inspectorDAO');
-const InspectorFilter = require('../filters/inspectorFilter');
+const InspectionService = require('./InspectionService');
+const InspectorDAO = require('../dao/InspectorDAO');
+const InspectorFilter = require('../filters/InspectorFilter');
 const { formatDate, matchDate } = require('../utils/formatDate');
-const InspectorAssembler = require('../assembler/inspectorAssembler');
+const InspectorAssembler = require('../assembler/InspectorAssembler');
 
 class InspectorService {
   static get(id) {
@@ -26,21 +26,21 @@ class InspectorService {
   static formatDay(dayString) {
     const dayObject = {
       [dayString]: {
-        inspectores: {},
+        inspectors: {},
       },
     };
 
     return dayObject;
   }
 
-  static findAvailableInspector(day, localidad, inspectores_id, inspecciones) {
+  static findAvailableInspector(day, localidad, inspectors_id, inspections) {
     return new Promise((resolve, reject) => {
       const inspectorFilter = new InspectorFilter();
-      inspectorFilter.fillData({ localidades: localidad, _id: inspectores_id });
+      inspectorFilter.fillData({ localidades: localidad, _id: inspectors_id });
       this.find(inspectorFilter.filterData())
-        .then((inspectores) => {
+        .then((inspectors) => {
           let assignedInspector = null;
-          inspectores.forEach((inspector) => {
+          inspectors.forEach((inspector) => {
             inspector = inspector.toJSON();
             let { maximo } = inspector;
 
@@ -48,7 +48,7 @@ class InspectorService {
               if (inspector.habilitar.find((fecha) => matchDate(formatDate(fecha), day))) {
                 assignedInspector = inspector._id;
               }
-              inspecciones.forEach(({ inspector_id, fecha }) => {
+              inspections.forEach(({ inspector_id, fecha }) => {
                 if (matchDate(formatDate(fecha), day) && inspector_id === inspector._id) {
                   maximo--;
                 }
@@ -61,7 +61,7 @@ class InspectorService {
           });
           return {
             inspectorDisponible: assignedInspector,
-            candidatos: inspectores_id.map(({ _id }) => (_id)),
+            candidatos: inspectors_id.map(({ _id }) => (_id)),
           };
         })
         .then(resolve)
@@ -69,10 +69,10 @@ class InspectorService {
     });
   }
 
-  static isSomeoneAvailable(inspectores, localidad, dia) {
+  static isSomeoneAvailable(inspectors, localidad, dia) {
     return new Promise((resolve, reject) => {
-      InspectionService.getInspectionsFromInspectors(inspectores)
-        .then(([inspectores, inspecciones]) => this.findAvailableInspector(dia, localidad, inspectores, inspecciones))
+      InspectionService.getInspectionsFromInspectors(inspectors)
+        .then(([inspectors, inspections]) => this.findAvailableInspector(dia, localidad, inspectors, inspections))
         .then(resolve)
         .catch(reject);
     });

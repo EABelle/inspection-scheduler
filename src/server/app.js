@@ -9,11 +9,11 @@ const app = express();
 
 // load routes
 const http = require('http');
-const calendarioRouter = require('./routes/calendarioRouter');
+const calendarRouter = require('./routes/calendarRouter');
 const agendaRouter = require('./routes/agendaRouter');
 const inspectorRouter = require('./routes/inspectorRouter');
-const inspeccionRouter = require('./routes/inspeccionRouter');
-const localidadRouter = require('./routes/localidadRouter');
+const inspectionRouter = require('./routes/inspectionRouter');
+const localidadRouter = require('./routes/locationRouter');
 const loginRouter = require('./routes/loginRouter');
 const authMiddleware = require('./middlewares/auth');
 
@@ -50,11 +50,11 @@ app.use((req, res, next) => {
   }
 });
 
-app.use('/calendario', calendarioRouter); // auth middlewares within it's router
-app.use('/agendar', apiKeyMiddleware, agendaRouter);
+app.use('/calendar', calendarRouter); // auth middlewares within it's router
+app.use('/schedule', apiKeyMiddleware, agendaRouter);
 
 app.use('/inspectors', authMiddleware, inspectorRouter);
-app.use('/inspections', authMiddleware, inspeccionRouter);
+app.use('/inspections', authMiddleware, inspectionRouter);
 // app.use('/localidad', authMiddleware, localidadRouter);
 app.use('/localidad', localidadRouter);
 

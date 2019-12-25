@@ -1,29 +1,29 @@
 
-const AgendaService = require('../services/agendaService');
-const InspectorFilter = require('../filters/inspectorFilter');
+const AgendaService = require('../services/AgendaService');
+const InspectorFilter = require('../filters/InspectorFilter');
 
 const { isValidDate } = require('../utils/validate');
 const { transformDateString } = require('../utils/formatDate');
 
 class AgendaController {
-  static agendar(req, res) {
+  static schedule(req, res) {
     const data = req.body;
 
 
-    if (!isValidDate(data.inspeccion.dia)) {
+    if (!isValidDate(data.inspection.dia)) {
       res.status(400).send({ message: 'Not valid date' });
     }
 
-    data.inspeccion.dia = transformDateString(data.inspeccion.dia);
+    data.inspection.dia = transformDateString(data.inspection.dia);
 
     const inspectorFilter = new InspectorFilter();
-    inspectorFilter.fillData({ localidades: data.inspeccion.localidad });
+    inspectorFilter.fillData({ localidades: data.inspection.localidad });
 
 
     AgendaService.save(data, inspectorFilter)
-      .then((inspeccion) => {
+      .then((inspection) => {
         res.status(201).send({
-          data: inspeccion,
+          data: inspection,
         });
       })
       .catch((err) => res.status(err.code || 400).send(err.message));

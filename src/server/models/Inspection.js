@@ -3,14 +3,14 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const InspeccionSchema = Schema({
+const InspectionSchema = Schema({
   fecha: Date,
   inspector_id: Object,
   candidatos: Array,
   titular: Object,
   vehiculo: Object,
-  inspeccion: Object,
+  inspection: Object,
   observaciones: String,
 });
 
-module.exports = mongoose.model('Inspeccion', InspeccionSchema);
+module.exports = mongoose.model('Inspection', InspectionSchema);

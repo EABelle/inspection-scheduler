@@ -1,14 +1,14 @@
 
-const GenericModelDTO = require('./genericModelDTO');
+const GenericModelDTO = require('./GenericModelDTO');
 
-class InspeccionDTO extends GenericModelDTO {
+class InspectionDTO extends GenericModelDTO {
   constructor() {
     super();
     this.data = Object.assign(this.data, {
       fecha: null,
       inspector_id: null,
       candidatos: null,
-      inspeccion: null,
+      inspection: null,
       titular: null,
       vehiculo: null,
       observaciones: null,
@@ -20,4 +20,4 @@ class InspeccionDTO extends GenericModelDTO {
   }
 }
 
-module.exports = InspeccionDTO;
+module.exports = InspectionDTO;

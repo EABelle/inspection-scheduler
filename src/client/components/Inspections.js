@@ -110,7 +110,7 @@ export class Inspections extends React.Component {
                         </TableRow>
                       );
                     })
-                    : 'No se encontraron inspecciones'
+                    : 'No se encontraron inspections'
               }
           </TableBody>
         </Table>

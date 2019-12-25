@@ -1,7 +1,7 @@
 
-const GenericFilter = require('./genericFilter');
+const GenericFilter = require('./GenericFilter');
 
-class InspeccionFilter extends GenericFilter {
+class InspectionFilter extends GenericFilter {
   constructor() {
     super();
     this.data = Object.assign(this.data, {
@@ -13,9 +13,9 @@ class InspeccionFilter extends GenericFilter {
   fillData(data) {
     super.fillData(data);
 
-    if (data.inspectores) {
+    if (data.inspectors) {
       this.data.inspector_id = {
-        $in: data.inspectores,
+        $in: data.inspectors,
       };
     }
 
@@ -36,4 +36,4 @@ class InspeccionFilter extends GenericFilter {
   }
 }
 
-module.exports = InspeccionFilter;
+module.exports = InspectionFilter;

@@ -17,7 +17,7 @@ export function loadCalendarFail() {
 
 export function fetchCalendar(filters) {
   return (dispatch) => {
-    let url = '/calendario';
+    let url = '/calendar';
     if (!filters || (filters && !filters.onlyAvailableInspectors)) {
       url += '/allAvailabilities';
     }

@@ -1,10 +1,9 @@
 
-const LoginService = require('../services/loginService');
-const UserFilter = require('../filters/userFilter');
+const LoginService = require('../services/LoginService');
+const UserFilter = require('../filters/UserFilter');
 
 class LoginController {
   static login(req, res) {
-    console.log('Login');
     const userFilter = new UserFilter();
 
     const { username, password } = req.body;

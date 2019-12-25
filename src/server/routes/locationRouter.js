@@ -1,6 +1,6 @@
 
 const express = require('express');
-const LocalidadController = require('../controllers/localidadController');
+const LocalidadController = require('../controllers/LocationController');
 
 const api = express.Router();
 

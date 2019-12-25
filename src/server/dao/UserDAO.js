@@ -1,5 +1,5 @@
 
-const User = require('../models/user');
+const User = require('../models/User');
 
 class UserDAO {
   static find(filter) {

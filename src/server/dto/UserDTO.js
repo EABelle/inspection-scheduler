@@ -1,5 +1,5 @@
 
-const GenericModelDTO = require('./genericModelDTO');
+const GenericModelDTO = require('./GenericModelDTO');
 
 class UserDTO extends GenericModelDTO {
   constructor() {
