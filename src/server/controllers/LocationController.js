@@ -7,9 +7,9 @@ class LocationController {
   static get(req, res) {
     const locationFilter = new LocationFilter();
 
-    const { nombre, cp } = req.query;
+    const { name, zipCode } = req.query;
 
-    locationFilter.fillData({ nombre, cp });
+    locationFilter.fillData({ name, zipCode });
     LocationService.find(locationFilter.data)
       .then(
         (location) => {

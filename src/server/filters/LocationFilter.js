@@ -9,11 +9,11 @@ class InspectorFilter extends GenericFilter {
 
   fillData(data) {
     super.fillData(data);
-    if (data.nombre) {
-      this.data.nombre = data.nombre;
+    if (data.name) {
+      this.data.name = data.name;
     }
-    if (data.cp) {
-      this.data.cp = data.cp;
+    if (data.zipCode) {
+      this.data.zipCode = data.zipCode;
     }
   }
 }

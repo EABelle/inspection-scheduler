@@ -1,22 +1,13 @@
 const LocationDAO = require('../dao/LocationDAO');
 
 class LocationService {
-  static get(id) {
-    return new Promise((resolve, reject) => {
-      LocationDAO.fetch(id)
-        .then((location) => resolve(location))
-        .catch((err) => {
-          reject(err);
-        });
-    });
+
+  static async get(id) {
+    return await LocationDAO.fetch(id);
   }
 
-  static find(filterData) {
-    return new Promise((resolve, reject) => {
-      LocationDAO.find(filterData)
-        .then(resolve)
-        .catch(reject);
-    });
+  static async find(filterData) {
+    return await LocationDAO.find(filterData);
   }
 }
 module.exports = LocationService;

@@ -2,31 +2,14 @@
 const Location = require('../models/Location');
 
 class LocationDAO {
-  static find(filter) {
-    return new Promise((resolve, reject) => {
-      const query = filter && filter.cp && filter.nombre ? { $or: [{ cp: filter.cp }, { nombre: filter.nombre }] } : filter;
-      console.log(query);
-      Location.find(query).then((locations) => {
-        if (!locations) {
-          reject({ message: 'no se encontró ninguna location' });
-        } else {
-          resolve(locations);
-        }
-      }).catch(() => { reject({ message: 'no se pudo realizar la busqueda de location' }); });
-    });
+
+  static async find(filter) {
+    const query = filter && filter.zipCode && filter.name ? { $or: [{ zipCode: filter.zipCode }, { zipCode: filter.zipCode }] } : filter;
+    return await Location.find(query);
   }
 
-  static fetch(id) {
-    return new Promise((resolve, reject) => {
-      Location.findById(id).exec((err, location) => {
-        if (err || !location) {
-          console.log(err);
-          reject({ message: 'No pudo encontrarse la location' });
-        } else {
-          resolve(location);
-        }
-      });
-    });
+  static async fetch(id) {
+    return await Location.findById(id);
   }
 }
 

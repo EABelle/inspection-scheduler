@@ -8,9 +8,9 @@ const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/inspectionSche
 
 mongoose.connect(url, { useNewUrlParser: true })
   .then(() => {
-    console.log('Conectado a la base de datos');
+    console.log(`Connected to DB at ${url}`);
     app.listen(port, () => {
-      console.log('Servidor escuchando peticiones');
+      console.log(`Server is listening on port ${port}`);
     });
   })
   .catch((err) => {
