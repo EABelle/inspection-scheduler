@@ -6,12 +6,12 @@ class InspectorDTO extends GenericModelDTO {
     super();
     this.data = Object.assign(this.data, {
       locations: null,
-      nombre_apellido: null,
-      provincia: null,
-      horarios: null,
-      maximo: null,
-      habilitar: null,
-      inhabilitar: null,
+      fullName: null,
+      workingArea: null,
+      times: null,
+      maximumPerDay: null,
+      daysUnlimited: null,
+      daysNotAble: null,
     });
   }
 

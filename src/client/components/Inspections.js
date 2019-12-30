@@ -80,9 +80,9 @@ export class Inspections extends React.Component {
             {
                   this.props.inspections
                     ? this.props.inspections.map(({
-                      _id, titular, vehiculo, fecha,
+                      _id, titular, vehiculo, date,
                     }) => {
-                      const hours = (new Date(fecha)).getHours();
+                      const hours = (new Date(date)).getHours();
                       console.log(titular);
                       return (
                         <TableRow key={_id}>

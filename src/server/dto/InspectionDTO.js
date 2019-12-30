@@ -5,13 +5,13 @@ class InspectionDTO extends GenericModelDTO {
   constructor() {
     super();
     this.data = Object.assign(this.data, {
-      fecha: null,
-      inspector_id: null,
-      candidatos: null,
+      date: null,
+      inspectorId: null,
+      candidates: null,
       inspection: null,
-      titular: null,
-      vehiculo: null,
-      observaciones: null,
+      owner: null,
+      vehicle: null,
+      comments: null,
     });
   }
 

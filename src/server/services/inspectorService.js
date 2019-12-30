@@ -42,26 +42,26 @@ class InspectorService {
           let assignedInspector = null;
           inspectors.forEach((inspector) => {
             inspector = inspector.toJSON();
-            let { maximo } = inspector;
+            let { maximumPerDay } = inspector;
 
-            if (!inspector.inhabilitar.find((fecha) => matchDate(formatDate(fecha), day))) {
-              if (inspector.habilitar.find((fecha) => matchDate(formatDate(fecha), day))) {
+            if (!inspector.daysNotAble.find((date) => matchDate(formatDate(date), day))) {
+              if (inspector.daysUnlimited.find((date) => matchDate(formatDate(date), day))) {
                 assignedInspector = inspector._id;
               }
-              inspections.forEach(({ inspector_id, fecha }) => {
-                if (matchDate(formatDate(fecha), day) && inspector_id === inspector._id) {
-                  maximo--;
+              inspections.forEach(({ inspector_id, date }) => {
+                if (matchDate(formatDate(date), day) && inspector_id === inspector._id) {
+                  maximumPerDay--;
                 }
               });
 
-              if (maximo > 0) {
+              if (maximumPerDay > 0) {
                 assignedInspector = inspector._id;
               }
             }
           });
           return {
-            inspectorDisponible: assignedInspector,
-            candidatos: inspectors_id.map(({ _id }) => (_id)),
+            availableInspector: assignedInspector,
+            candidates: inspectors_id.map(({ _id }) => (_id)),
           };
         })
         .then(resolve)
@@ -69,10 +69,10 @@ class InspectorService {
     });
   }
 
-  static isSomeoneAvailable(inspectors, location, dia) {
+  static isSomeoneAvailable(inspectors, location, day) {
     return new Promise((resolve, reject) => {
       InspectionService.getInspectionsFromInspectors(inspectors)
-        .then(([inspectors, inspections]) => this.findAvailableInspector(dia, location, inspectors, inspections))
+        .then(([inspectors, inspections]) => this.findAvailableInspector(day, location, inspectors, inspections))
         .then(resolve)
         .catch(reject);
     });

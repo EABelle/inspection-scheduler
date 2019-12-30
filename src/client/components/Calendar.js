@@ -152,14 +152,14 @@ class Calendar extends React.Component {
           <TableBody displayRowCheckbox={false}>
             {formattedDate && this.props.calendar[formattedDate]
               ? availableInspectorsArray.map(({
-                id, nombre_apellido, habilitar, inhabilitar, maximo,
+                id, nombre_apellido, habilitar, inhabilitar, maximumPerDay,
               }) => (
                 <TableRow key={id}>
                   <TableRowColumn>
                     {nombre_apellido}
                   </TableRowColumn>
                   <TableRowColumn>
-                    {!habilitar && !inhabilitar ? maximo : null}
+                    {!habilitar && !inhabilitar ? maximumPerDay : null}
                   </TableRowColumn>
                   <TableRowColumn>
                     <RaisedButton

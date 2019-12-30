@@ -11,20 +11,19 @@ class AgendaService {
     return new Promise((resolve, reject) => {
       const inspectionDTO = new InspectionDTO();
       InspectorDAO.find(inspectorFilter.filterData())
-        .then((inspectors) => InspectorService.isSomeoneAvailable(inspectors, inspectionData.inspection.location, inspectionData.inspection.dia))
-        .then(({ inspectorDisponible, candidatos }) => {
-          if (!inspectorDisponible) {
+        .then((inspectors) => InspectorService.isSomeoneAvailable(inspectors, inspectionData.inspection.location, inspectionData.inspection.day))
+        .then(({ availableInspector, candidates }) => {
+          if (!availableInspector) {
             reject(() => ({ message: 'no hay disponibilidad' }));
           }
           inspectionData = {
             ...inspectionData,
-            candidatos,
-            inspector_id: inspectorDisponible,
-            fecha: buildDate(inspectionData.inspection.dia, inspectionData.inspection.horario),
+            candidates,
+            inspectorId: availableInspector,
+            date: buildDate(inspectionData.inspection.day, inspectionData.inspection.time),
           };
           inspectionDTO.hydrate(inspectionData);
-          const inspection = InspectionAssembler.fromDTO(inspectionDTO.data);
-          return inspection;
+          return InspectionAssembler.fromDTO(inspectionDTO.data);
         })
         .then((inspection) => InspectionDAO.save(inspection))
         .then(resolve)

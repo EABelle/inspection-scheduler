@@ -1,6 +1,6 @@
 [
     {
-        "localidades":[
+        "locations":[
             "FLORIDA",
             "JUAN B.JUSTO",
             "PUENTE SAAVEDRA",
@@ -47,58 +47,58 @@
             "LOMA HERMOSA",
             "VILLA LYNCH"
         ],
-        "nombre_apellido":"Pedro Martinez",
-        "provincia":"BS_AS",
-        "horarios":[
+        "fullName":"Pedro Martinez",
+        "workingArea":"BS_AS",
+        "times":[
             {
-                "dia":1,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":1,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":2,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":2,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":3,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":3,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":4,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":4,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":5,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":5,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":6,
-                "rango":{
-                "inicio":"08:00",
-                "fin":"13:00"
+                "day":6,
+                "range":{
+                "start":"08:00",
+                "end":"13:00"
                 }
             }
         ],
-        "inhabilitar":[],
-        "habilitar":[],
-        "maximo":20
+        "daysNotAble":[],
+        "daysUnlimited":[],
+        "maximumPerDay":20
     },
     {
-        "localidades":[
+        "locations":[
             "FLORIDA",
             "JUAN B.JUSTO",
             "PUENTE SAAVEDRA",
@@ -141,51 +141,51 @@
             "VILLA BOSCH",
             "EL PALOMAR"
         ],
-        "nombre_apellido":"Hernan Perez",
-        "provincia":"BS_AS",
-        "horarios":[
+        "fullName":"Hernan Perez",
+        "workingArea":"BS_AS",
+        "times":[
             {
-                "dia":1,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"13:00"
+                "day":1,
+                "range":{
+                    "start":"08:00",
+                    "end":"13:00"
                 }
             },
             {
-                "dia":2,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"13:00"
+                "day":2,
+                "range":{
+                    "start":"08:00",
+                    "end":"13:00"
                 }
             },
             {
-                "dia":3,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"13:00"
+                "day":3,
+                "range":{
+                    "start":"08:00",
+                    "end":"13:00"
                 }
             },
             {
-                "dia":4,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"13:00"
+                "day":4,
+                "range":{
+                    "start":"08:00",
+                    "end":"13:00"
                 }
             },
             {
-                "dia":5,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"13:00"
+                "day":5,
+                "range":{
+                    "start":"08:00",
+                    "end":"13:00"
                 }
             }
         ],
-        "inhabilitar":[],
-        "habilitar":[],
-        "maximo": 10
+        "daysNotAble":[],
+        "daysUnlimited":[],
+        "maximumPerDay": 10
     },
     {
-        "localidades":[
+        "locations":[
             "REMEDIOS DE ESCALADA",
             "VALENTIN ALSINA",
             "GERLI",
@@ -211,58 +211,58 @@
             "VILLA NUÑEZ",
             "WILDE"
         ],
-        "nombre_apellido":"Pablo Repecka",
-        "provincia":"BS_AS",
-        "horarios":[
+        "fullName":"Pablo Repecka",
+        "workingArea":"BS_AS",
+        "times":[
             {
-                "dia":1,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":1,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":2,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":2,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":3,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":3,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":4,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":4,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":5,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":5,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":6,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"13:00"
+                "day":6,
+                "range":{
+                    "start":"08:00",
+                    "end":"13:00"
                 }
             }
         ],
-        "inhabilitar":[],
-        "habilitar":[],
-        "maximo": 20
+        "daysNotAble":[],
+        "daysUnlimited":[],
+        "maximumPerDay": 20
     },
     {
-        "localidades":[
+        "locations":[
             "REMEDIOS DE ESCALADA",
             "VALENTIN ALSINA",
             "GERLI",
@@ -284,58 +284,58 @@
             "BURZACO",
             "LONGCHAMPS"
         ],
-        "nombre_apellido":"Cesar Miraglia",
-        "provincia":"BS_AS",
-        "horarios":[
+        "fullName":"Cesar Miraglia",
+        "workingArea":"BS_AS",
+        "times":[
             {
-                "dia":1,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":1,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":2,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":2,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":3,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":3,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":4,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":4,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":5,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":5,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":6,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"13:00"
+                "day":6,
+                "range":{
+                    "start":"08:00",
+                    "end":"13:00"
                 }
             }
         ],
-        "inhabilitar":[],
-        "habilitar":[],
-        "maximo": 20
+        "daysNotAble":[],
+        "daysUnlimited":[],
+        "maximumPerDay": 20
     },
     {
-        "localidades":[
+        "locations":[
             "REMEDIOS DE ESCALADA",
             "VALENTIN ALSINA",
             "GERLI",
@@ -374,54 +374,54 @@
             "BURZACO",
             "LONGCHAMPS"
         ],
-        "nombre_apellido":"Jose Luis Jaime",
-        "provincia":"BS_AS",
-        "horarios":[
+        "fullName":"Jose Luis Jaime",
+        "workingArea":"BS_AS",
+        "times":[
             {
-                "dia":1,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":1,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":2,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":2,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":3,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":3,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":4,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":4,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":5,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"18:00"
+                "day":5,
+                "range":{
+                    "start":"08:00",
+                    "end":"18:00"
                 }
             },
             {
-                "dia":6,
-                "rango":{
-                    "inicio":"08:00",
-                    "fin":"13:00"
+                "day":6,
+                "range":{
+                    "start":"08:00",
+                    "end":"13:00"
                 }
             }
         ],
-        "inhabilitar":[],
-        "habilitar":[],
-        "maximo": 20
+        "daysNotAble":[],
+        "daysUnlimited":[],
+        "maximumPerDay": 20
     }
 ]

@@ -5,8 +5,8 @@ class InspectionFilter extends GenericFilter {
   constructor() {
     super();
     this.data = Object.assign(this.data, {
-      inspector_id: null,
-      fecha: null,
+      inspectorId: null,
+      date: null,
     });
   }
 
@@ -14,22 +14,22 @@ class InspectionFilter extends GenericFilter {
     super.fillData(data);
 
     if (data.inspectors) {
-      this.data.inspector_id = {
+      this.data.inspectorId = {
         $in: data.inspectors,
       };
     }
 
-    if (data.fecha) {
-      this.data.fecha = {
-        $in: data.fecha,
+    if (data.date) {
+      this.data.date = {
+        $in: data.date,
       };
     } else {
-      const fromFecha = new Date();
-      const lastFecha = new Date(fromFecha);
-      lastFecha.setDate(fromFecha.getDate() + 5);
+      const dateFrom = new Date();
+      const lastFecha = new Date(dateFrom);
+      lastFecha.setDate(dateFrom.getDate() + 5);
 
-      this.data.fecha = {
-        $gte: fromFecha,
+      this.data.date = {
+        $gte: dateFrom,
         $lt: lastFecha,
       };
     }

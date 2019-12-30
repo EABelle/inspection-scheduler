@@ -19,37 +19,31 @@ class InspectorController {
             data: inspector,
           });
         },
-      ).catch((err) => res.status(err.code || 400).send(err.message));
+      ).catch((err) => res.status(err.code || 500).send(err.message));
   }
 
-  static post(req, res, next) {
+  static post(req, res) {
     const inspectorDTO = new InspectorDTO();
     inspectorDTO.hydrate(req.body);
-    InspectorController.resolve(next, InspectorService.save(inspectorDTO), (inspector) => {
-      res.status(201).send({
-        data: inspector,
-      });
-    });
+    InspectorService.save(inspectorDTO).then((inspector) => {
+      res.status(200).send(inspector);
+    }).catch((err) => res.status(err.code || 500).send(err.message));
   }
 
-  static getInspector(req, res, next) {
+  static getInspector(req, res) {
     const { id } = req.params;
-    InspectorController.resolve(next, InspectorService.get(id), (inspector) => {
-      res.status(200).send({
-        data: inspector,
-      });
-    });
+    InspectorService.get(id).then(inspector => {
+      res.status(200).send(inspector);
+    }).catch((err) => res.status(err.code || 500).send(err.message));
   }
 
-  static updateInspector(req, res, next) {
+  static updateInspector(req, res) {
     const { id } = req.params;
     const inspectorDTO = new InspectorDTO();
     inspectorDTO.hydrate(req.body);
-    InspectorController.resolve(next, InspectorService.update(id, inspectorDTO, req.body.set), (inspector) => {
-      res.status(200).send({
-        data: inspector,
-      });
-    });
+    InspectorService.update(id, inspectorDTO, req.body.set).then(inspector => {
+      res.status(200).send(inspector);
+    }).catch((err) => res.status(err.code || 500).send(err.message));
   }
 
   static deleteInspector(req, res, next) {

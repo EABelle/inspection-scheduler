@@ -10,7 +10,7 @@ Expone dos endpoints; uno para consultar la disponibilidad para realizar la insp
 
 ## Endpoints
 
-### {{baseUrl}}/calendar/horarios?location=:location&cp=:cp
+### {{baseUrl}}/calendar/times?location=:location&cp=:cp
 
 #### Método: GET
 
@@ -74,7 +74,7 @@ Request body:
 
 ```js
 {
-   "titular": {
+   "owner": {
     	"nombre": string, // *OBLIGATORIO*
     	"apellido": string, // *OBLIGATORIO*
     	"telefono_1": number, // *OBLIGATORIO*
@@ -84,11 +84,11 @@ Request body:
     	"direccion": string, // *OBLIGATORIO*
     	"location": string, // *opcional* en caso de que sea provisto el código postal
 		"codigo_postal": string, // *opcional* en caso de que sea provista la location
-    	"provincia": string,
-    	"dia": "DD|MM|AAAA", // *OBLIGATORIO* se toma como fecha válida una fecha desde la actual hasta 5 días posterior
-    	"horario": string // *OBLIGATORIO* la hora inicial, sin minutos
+    	"workingArea": string,
+    	"day": "DD|MM|AAAA", date
+    	"horario": string //dateIGATORIO* ladate inicial, sin minutos
     },
-    "vehiculo": {
+    "vehicle": {
     	"dominio": string, // *OBLIGATORIO*
         "tipo": string,
         "marca": string, // *OBLIGATORIO*
@@ -99,6 +99,6 @@ Request body:
     	"km": number,
     	"combustible": string
     },
-    "observaciones": string
+    "comments": string
 }
 ```

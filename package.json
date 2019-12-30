@@ -1,7 +1,7 @@
 {
-  "name": "bellegarde-automotores",
+  "name": "bellegarde-vehicles",
   "version": "1.0.0",
-  "description": "Gestión de automotores",
+  "description": "Vehicle inspections management system",
   "main": "src/server/index.js",
   "private": true,
   "author": "eabelle",
@@ -10,7 +10,7 @@
     "start": "npm run start:server && npm run start:front",
     "build": "react-scripts build",
     "start:front": "NODE_ENV=development react-scripts start",
-    "start:server": "NODE_ENV=development nodemon src/server/index.js",
+    "start:server": "NODE_ENV=development API_KEY=TEST nodemon src/server/index.js",
     "test:front": "react-scripts test --env=jsdom",
     "test:server": "echo \"Error: no test specified\" && exit 1",
     "install-start": "npm install && npm start",

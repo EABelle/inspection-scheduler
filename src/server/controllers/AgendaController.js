@@ -10,11 +10,11 @@ class AgendaController {
     const data = req.body;
 
 
-    if (!isValidDate(data.inspection.dia)) {
+    if (!isValidDate(data.inspection.day)) {
       res.status(400).send({ message: 'Not valid date' });
     }
 
-    data.inspection.dia = transformDateString(data.inspection.dia);
+    data.inspection.day = transformDateString(data.inspection.day);
 
     const inspectorFilter = new InspectorFilter();
     inspectorFilter.fillData({ locations: data.inspection.location });

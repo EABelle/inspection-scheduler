@@ -11,23 +11,23 @@ class InspectionsFilter extends GenericFilter {
     super.fillData(data);
 
     if (data.inspectors) {
-      this.data.inspector_id = {
+      this.data.inspectorId = {
         $in: data.inspectors,
       };
     }
 
     if (data.day && data.month && data.year) {
-      const fromFecha = new Date();
-      fromFecha.setDate(data.day);
-      fromFecha.setMonth(parseInt(data.month, 10) - 1);
-      fromFecha.setFullYear(data.year);
-      fromFecha.setHours(0, 0, 0, 0);
+      const dateFrom = new Date();
+      dateFrom.setDate(data.day);
+      dateFrom.setMonth(parseInt(data.month, 10) - 1);
+      dateFrom.setFullYear(data.year);
+      dateFrom.setHours(0, 0, 0, 0);
 
-      const lastFecha = new Date(fromFecha);
-      lastFecha.setDate(fromFecha.getDate() + 1);
+      const lastFecha = new Date(dateFrom);
+      lastFecha.setDate(dateFrom.getDate() + 1);
 
-      this.data.fecha = {
-        $gte: fromFecha,
+      this.data.date = {
+        $gte: dateFrom,
         $lt: lastFecha,
       };
     }

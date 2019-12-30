@@ -4,35 +4,21 @@ const Inspector = require('../models/Inspector');
 const { addDays, buildDate, transformDateString } = require('../utils/formatDate');
 
 class InspectorDAO {
-  static find(filter) {
-    return new Promise((resolve, reject) => {
-      const query = !filter.locations && !filter.id ? undefined : filter;
-      Inspector.find(query)
-        .then((inspectors) => {
-            resolve(inspectors);
-        })
-        .catch((error) => { reject(error); });
-    });
+  static async find(filter) {
+    const query = !filter.locations && !filter.id ? undefined : filter;
+    return await Inspector.find(query);
   }
 
-  static fetch(id) {
-    return new Promise((resolve, reject) => {
-      Inspector.findById(id).exec((err, inspector) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(inspector);
-        }
-      });
-    });
+  static async fetch(id) {
+    return await Inspector.findById(id);
   }
 
   static save(inspectorData) {
     return new Promise((resolve, reject) => {
       const inspector = new Inspector(inspectorData);
-      const { habilitar, inhabilitar } = inspector;
-      inspector.habilitar = habilitar.map((date) => (buildDate(transformDateString(date))));
-      inspector.inhabilitar = inhabilitar.map((date) => (buildDate(transformDateString(date))));
+      const { daysUnlimited, daysNotAble } = inspector;
+      inspector.daysUnlimited = daysUnlimited.map((date) => (buildDate(transformDateString(date))));
+      inspector.daysNotAble = daysNotAble.map((date) => (buildDate(transformDateString(date))));
       inspector.save((err, inspector) => {
         if (err) {
           reject(err);
@@ -50,9 +36,9 @@ class InspectorDAO {
       directive = '$addToSet';
     }
     if (
-      inspector.habilitar || inspector.inhabilitar
+      inspector.daysUnlimited || inspector.daysNotAble
     ) {
-      const action = inspector.habilitar ? 'habilitar' : 'inhabilitar';
+      const action = inspector.daysUnlimited ? 'habilitar' : 'inhabilitar';
       dtoUpdate = {
         [directive]: {
           [action]: set
