@@ -19,14 +19,6 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
-    if (isAuthenticated()) {
-      this.setState(() => ({
-        redirectToReferrer: true,
-      }));
-    }
-  }
-
   handleClick() {
     const payload = {
       username: this.state.username,
@@ -56,6 +48,7 @@ class Login extends React.Component {
   render() {
     const { from } = this.props.location.state || { from: { pathname: '/inspections' } };
     const { redirectToReferrer } = this.state;
+    console.log(this.state)
     if (redirectToReferrer === true) {
       return <Redirect to={from} />;
     }
@@ -77,7 +70,7 @@ class Login extends React.Component {
           errorText={this.state.error ? 'Usuario o contraseña incorrectos' : ''}
         />
         <br />
-        <RaisedButton type="submit" label="Entrar" primary style={style} onClick={(event) => this.handleClick(event)} />
+        <RaisedButton label="Entrar" primary style={style} onClick={(event) => this.handleClick(event)} />
       </form>
     );
   }

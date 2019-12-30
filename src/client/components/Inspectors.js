@@ -99,7 +99,7 @@ class Inspectors extends React.Component {
                   {inspector.nombre_apellido}
                 </TableRowColumn>
                 <TableRowColumn>
-                  {`${inspector.horarios.map(({ dia }) => getDay(day)).join(', ')} `}
+                  {`${inspector.horarios.map(({ day }) => getDay(day)).join(', ')} `}
                 </TableRowColumn>
                 <TableRowColumn>
                   {inspector.maximumPerDay}
@@ -113,7 +113,7 @@ class Inspectors extends React.Component {
           </TableBody>
         </Table>
         <Dialog
-          title={`Inspector: ${this.state.selectedInspector ? this.state.selectedInspector.nombre_apellido : null}`}
+          title={`Inspector: ${this.state.selectedInspector ? this.state.selectedInspector.name : null}`}
           actions={actions}
           modal={false}
           open={this.state.open}
@@ -130,13 +130,13 @@ class Inspectors extends React.Component {
                   </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
-                  {this.state.selectedInspector.horarios.map(({ dia, rango }) => (
+                  {this.state.selectedInspector.horarios.map(({ day, rango: range }) => (
                     <TableRow key={day}>
                       <TableRowColumn>
                         {this.getDay(day)}
                       </TableRowColumn>
                       <TableRowColumn>
-                        {`de ${rango.inicio} a ${rango.fin} hs`}
+                        {`de ${range.inicio} a ${range.fin} hs`}
                       </TableRowColumn>
                     </TableRow>
                   ))}
