@@ -80,37 +80,37 @@ export class Inspections extends React.Component {
             {
                   this.props.inspections
                     ? this.props.inspections.map(({
-                      _id, titular, vehiculo, date,
+                      _id, owner, vehicle, date,
                     }) => {
                       const hours = (new Date(date)).getHours();
-                      console.log(titular);
+                      console.log(owner);
                       return (
                         <TableRow key={_id}>
                           <TableRowColumn>
                             {_id}
                           </TableRowColumn>
                           <TableRowColumn>
-                            {`${titular.apellido}, ${titular.nombre}`}
+                            {`${owner.lastName}, ${owner.firstName}`}
                           </TableRowColumn>
                           <TableRowColumn>
-                            {vehiculo.dominio}
+                            {vehicle.domain}
                           </TableRowColumn>
                           <TableRowColumn>
-                            {`${vehiculo.marca} ${vehiculo.modelo}`}
+                            {`${vehicle.brand} ${vehicle.model}`}
                           </TableRowColumn>
                           <TableRowColumn>
-                            {`${vehiculo.marca} ${vehiculo.modelo}`}
+                            {`${vehicle.brand} ${vehicle.model}`}
                           </TableRowColumn>
                           <TableRowColumn>
-                            {`${vehiculo.marca} ${vehiculo.modelo}`}
+                            {`${vehicle.brand} ${vehicle.model}`}
                           </TableRowColumn>
                           <TableRowColumn>
-                            {`${hours} a ${hours + 3}`}
+                            {`${hours} to ${hours + 3}`}
                           </TableRowColumn>
                         </TableRow>
                       );
                     })
-                    : 'No se encontraron inspections'
+                    : 'No inspections found'
               }
           </TableBody>
         </Table>

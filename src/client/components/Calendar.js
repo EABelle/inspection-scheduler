@@ -152,27 +152,27 @@ class Calendar extends React.Component {
           <TableBody displayRowCheckbox={false}>
             {formattedDate && this.props.calendar[formattedDate]
               ? availableInspectorsArray.map(({
-                id, nombre_apellido, habilitar, inhabilitar, maximumPerDay,
+                id, fullName, daysUnlimited, daysNotAble, maximumPerDay,
               }) => (
                 <TableRow key={id}>
                   <TableRowColumn>
-                    {nombre_apellido}
+                    {fullName}
                   </TableRowColumn>
                   <TableRowColumn>
-                    {!habilitar && !inhabilitar ? maximumPerDay : null}
+                    {!daysUnlimited && !daysNotAble ? maximumPerDay : null}
                   </TableRowColumn>
                   <TableRowColumn>
                     <RaisedButton
-                      label={habilitar ? 'Habilitado' : 'Habilitar'}
-                      primary={habilitar}
-                      onClick={() => this.enable(id, !habilitar)}
+                      label={daysUnlimited ? 'Habilitado' : 'Habilitar'}
+                      primary={daysUnlimited}
+                      onClick={() => this.enable(id, !daysUnlimited)}
                     />
                   </TableRowColumn>
                   <TableRowColumn>
                     <RaisedButton
-                      label={inhabilitar ? 'Inhabilitado' : 'Inhabilitar'}
-                      primary={inhabilitar}
-                      onClick={() => this.disable(id, !inhabilitar)}
+                      label={daysNotAble ? 'Inhabilitado' : 'Inhabilitar'}
+                      primary={daysNotAble}
+                      onClick={() => this.disable(id, !daysNotAble)}
                     />
                   </TableRowColumn>
                 </TableRow>

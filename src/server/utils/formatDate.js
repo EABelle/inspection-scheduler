@@ -19,7 +19,7 @@ function buildDate(pipeString, hours) {
   const [day, month, year] = pipeString.split('|').map((v) => (parseInt(v, 10)));
   const date = new Date();
   date.setDate(day);
-  date.setMonth(month);
+  date.setMonth(month - 1);
   date.setFullYear(year);
   date.setHours(hours || 0, 0, 0);
   return date;

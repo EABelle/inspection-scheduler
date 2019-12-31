@@ -37,7 +37,7 @@ class CalendarController {
       ).catch((err) => res.status(err.code || 400).send(err.message));
   }
 
-  static getByIgnoreAvailability(req, res, next) {
+  static getByIgnoreAvailability(req, res) {
     const inspectorFilter = new InspectorFilter();
 
     const { location } = req.query;

@@ -1,7 +1,7 @@
 import { put } from './index';
 
-const ENABLE = 'habilitar';
-const DISABLE = 'inhabilitar';
+const ENABLE = 'daysUnlimited';
+const DISABLE = 'daysNotAble';
 
 export function setEnableProp(inspectorId, date, set = true) {
   return _forceAvailability({ inspectorId, date, set }, ENABLE);

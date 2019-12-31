@@ -20,10 +20,6 @@ require('dotenv').config();
 const apiKeyMiddleware = require('./middlewares/apiKey');
 
 
-setInterval(() => {
-  http.get('/');
-}, 900000); // 15 min
-
 // middleware
 // body-parser
 app.use(bodyParser.urlencoded({ extended: false }));

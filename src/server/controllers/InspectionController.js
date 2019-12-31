@@ -1,8 +1,7 @@
-
 const InspectionService = require('../services/InspectionService');
 const InspectionsFilter = require('../filters/InspectionsFilter');
 const InspectionDTO = require('../dto/InspectionDTO');
-
+const buildDate = require('../utils/formatDate').buildDate;
 
 class InspectionController {
   static get(req, res) {
@@ -25,7 +24,8 @@ class InspectionController {
 
   static post(req, res) {
     const inspectionDTO = new InspectionDTO();
-    inspectionDTO.hydrate({...req.body, date: Date.now()});
+    const { date, time } = req.body.meetingDetails;
+    inspectionDTO.hydrate({...req.body, date: buildDate(date, time)});
     InspectionService.save(inspectionDTO).then((inspection) => {
       res.status(200).send(inspection);
     }).catch((err) => res.status(err.code || 500).send(err.message));

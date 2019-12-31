@@ -38,14 +38,15 @@ class InspectorDAO {
     if (
       inspector.daysUnlimited || inspector.daysNotAble
     ) {
-      const action = inspector.daysUnlimited ? 'habilitar' : 'inhabilitar';
+      const action = inspector.daysUnlimited ? 'daysUnlimited' : 'daysNotAble';
+      console.log(directive, inspector[action]);
       dtoUpdate = {
         [directive]: {
           [action]: set
-            ? buildDate(transformDateString(inspector[action]))
+            ? buildDate(inspector[action])
             : {
-              $gte: buildDate(transformDateString(inspector[action])),
-              $lt: buildDate(transformDateString(addDays(inspector[action], 1))),
+              $gte: buildDate(inspector[action]),
+              $lt: buildDate(addDays(inspector[action], 1)),
             },
         },
       };
