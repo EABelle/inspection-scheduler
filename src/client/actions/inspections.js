@@ -21,7 +21,7 @@ export function fetchInspections(filters) {
     const url = '/inspections';
     const query = filters ? `?${qs.stringify(filters)}` : '';
     return get(`${url}${query}`)
-      .then((response) => dispatch(loadInspectionsSuccess(response.data.data)))
+      .then((response) => dispatch(loadInspectionsSuccess(response.data)))
       .catch((err) => {
         alert(err);
         return dispatch(loadInspectionsFail());

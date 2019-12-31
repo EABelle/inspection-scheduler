@@ -18,54 +18,43 @@ class InspectionController {
     InspectionService.find(inspectionsFilter.data)
       .then(
         (inspections) => {
-          res.status(200).send({
-            data: inspections,
-          });
+          res.status(200).send(inspections);
         },
-      ).catch((err) => res.status(err.code || 400).send(err.message));
+      ).catch((err) => res.status(err.code || 500).send(err.message));
   }
 
-  static post(req, res, next) {
+  static post(req, res) {
     const inspectionDTO = new InspectionDTO();
-    inspectionDTO.hydrate(req.body);
-    InspectionController.resolve(next, InspectionService.save(inspectionDTO), (inspection) => {
-      res.status(201).send({
-        data: inspection,
-      });
-    });
+    inspectionDTO.hydrate({...req.body, date: Date.now()});
+    InspectionService.save(inspectionDTO).then((inspection) => {
+      res.status(200).send(inspection);
+    }).catch((err) => res.status(err.code || 500).send(err.message));
   }
 
-  static getInspection(req, res, next) {
+  static getInspection(req, res) {
     const { id } = req.params;
-    InspectionController.resolve(next, InspectionService.get(id), (inspection) => {
-      res.status(200).send({
-        data: inspection,
-      });
-    });
+    InspectionService.get(id).then((inspection) => {
+      res.status(200).send(inspection);
+    }).catch((err) => res.status(err.code || 500).send(err.message));
   }
 
-  static updateInspection(req, res, next) {
+  static updateInspection(req, res) {
     const { id } = req.params;
     const inspectionDTO = new InspectionDTO();
     inspectionDTO.hydrate(req.body);
-    InspectionController.resolve(
-      next,
-      InspectionService.update(id, inspectionDTO, req.body.set),
+    InspectionService.update(id, inspectionDTO, req.body.set).then(
       (inspection) => {
-        res.status(200).send({
-          data: inspection,
-        });
-      },
-    );
+        res.status(200).send(inspection);
+      }).catch((err) => res.status(err.code || 500).send(err.message));
   }
 
-  static deleteInspection(req, res, next) {
+  static deleteInspection(req, res, ) {
     const { id } = req.params;
-    InspectionController.resolve(next, InspectionService.delete(id), (message) => {
+    InspectionService.delete(id).then((message) => {
       res.status(200).send({
-        data: message,
+        message: message,
       });
-    });
+    }).catch((err) => res.status(err.code || 500).send(err.message));
   }
 }
 

@@ -4,17 +4,19 @@ const Inspection = require('../models/Inspection');
 class InspectionDAO {
   static find(filter) {
     return new Promise((resolve, reject) => {
-      Inspection.find(filter).then((inspections) => {
-        resolve(inspections);
-      }).catch((err) => {reject(err)}); });
-    }
+      Inspection.find(filter)
+          .then(resolve)
+          .catch(reject);
+    });
+  }
 
   static findWithInspectors(inspectors, filter) {
     return new Promise((resolve, reject) => {
       Inspection.find(filter).then((inspections) => {
         resolve([inspectors, inspections]);
-      }).catch((err) => { reject(err); }); });
-    }
+      }).catch(reject);
+    });
+  }
 
   static fetch(id) {
     return new Promise((resolve, reject) => {

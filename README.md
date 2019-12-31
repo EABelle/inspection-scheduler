@@ -75,29 +75,29 @@ Request body:
 ```js
 {
    "owner": {
-    	"nombre": string, // *OBLIGATORIO*
-    	"apellido": string, // *OBLIGATORIO*
-    	"telefono_1": number, // *OBLIGATORIO*
-    	"telefono_2": number
+    	"firstName": string, // *MANDATORY*
+    	"lastName": string, // *MANDATORY*
+    	"phone1": number, // *MANDATORY*
+    	"phone2": number
     },
     "inspection": {
-    	"direccion": string, // *OBLIGATORIO*
-    	"location": string, // *opcional* en caso de que sea provisto el código postal
-		"codigo_postal": string, // *opcional* en caso de que sea provista la location
+    	"address": string, // *MANDATORY*
+    	"city": string, // *optional* en caso de que sea provisto el código postal
+		"zipCode": string, // *opcional* en caso de que sea provista la location
     	"workingArea": string,
-    	"day": "DD|MM|AAAA", date
-    	"horario": string //dateIGATORIO* ladate inicial, sin minutos
+    	"date": "DD|MM|AAAA", date
+    	"time": string // *MANDATORY* la fecha inicial, sin minutos
     },
     "vehicle": {
-    	"dominio": string, // *OBLIGATORIO*
-        "tipo": string,
-        "marca": string, // *OBLIGATORIO*
-    	"modelo": string, // *OBLIGATORIO*
-        "anio": number,
-    	"chasis": string,
-    	"motor": string,
+    	"domain": string, // *MANDATORY*
+        "type": string,
+        "brand": string, // *MANDATORY*
+    	"model": string, // *MANDATORY*
+        "year": number,
+    	"chassisNumber": string,
+    	"motorNumber": string,
     	"km": number,
-    	"combustible": string
+    	"fuelType": string
     },
     "comments": string
 }

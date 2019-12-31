@@ -1,5 +1,7 @@
-
 const GenericModelDTO = require('./GenericModelDTO');
+const OwnerDTO = require('./OwnerDTO');
+const VehicleDTO = require('./VehicleDTO');
+const MeetingDetailsDTO = require('./MeetingDetailsDTO');
 
 class InspectionDTO extends GenericModelDTO {
   constructor() {
@@ -9,8 +11,9 @@ class InspectionDTO extends GenericModelDTO {
       inspectorId: null,
       candidates: null,
       inspection: null,
-      owner: null,
-      vehicle: null,
+      owner: new OwnerDTO(),
+      vehicle: new VehicleDTO(),
+      meetingDetails: new MeetingDetailsDTO(),
       comments: null,
     });
   }
