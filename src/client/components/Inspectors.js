@@ -61,7 +61,7 @@ class Inspectors extends React.Component {
   }
 
   getDateDetail(inspector) {
-    return <span onClick={() => this.handleOpen(inspector)}>ver detalle</span>;
+    return <span onClick={() => this.handleOpen(inspector)}>view details</span>;
   }
 
   handleOpen(selectedInspector) {
@@ -96,10 +96,10 @@ class Inspectors extends React.Component {
             {this.props.inspectors.map((inspector, index) => (
               <TableRow key={index}>
                 <TableRowColumn>
-                  {inspector.nombre_apellido}
+                  {inspector.fullName}
                 </TableRowColumn>
                 <TableRowColumn>
-                  {`${inspector.horarios.map(({ day }) => getDay(day)).join(', ')} `}
+                  {`${inspector.times.map(({ day }) => getDay(day)).join(', ')} `}
                 </TableRowColumn>
                 <TableRowColumn>
                   {inspector.maximumPerDay}
@@ -113,7 +113,7 @@ class Inspectors extends React.Component {
           </TableBody>
         </Table>
         <Dialog
-          title={`Inspector: ${this.state.selectedInspector ? this.state.selectedInspector.name : null}`}
+          title={`Inspector: ${this.state.selectedInspector ? this.state.selectedInspector.fullName : null}`}
           actions={actions}
           modal={false}
           open={this.state.open}
@@ -130,13 +130,13 @@ class Inspectors extends React.Component {
                   </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
-                  {this.state.selectedInspector.horarios.map(({ day, rango: range }) => (
+                  {this.state.selectedInspector.times.map(({ day, range }) => (
                     <TableRow key={day}>
                       <TableRowColumn>
-                        {this.getDay(day)}
+                        {getDay(day)}
                       </TableRowColumn>
                       <TableRowColumn>
-                        {`de ${range.inicio} a ${range.fin} hs`}
+                        {`de ${range.start} a ${range.end} hs`}
                       </TableRowColumn>
                     </TableRow>
                   ))}
@@ -145,16 +145,16 @@ class Inspectors extends React.Component {
               <h3>Locations</h3>
               <div style={styles.chipsWrapper}>
                 {
-                                    uniq(this.state.selectedInspector.locations).sort().map((location) => (
-                                      <Chip
-                                        key={location}
-                                        style={styles.chip}
-                                        onRequestDelete={() => {}}
-                                      >
-                                        {location}
-                                      </Chip>
-                                    ))
-                                }
+                    uniq(this.state.selectedInspector.locations).sort().map((location) => (
+                      <Chip
+                        key={location}
+                        style={styles.chip}
+                        onRequestDelete={() => {}}
+                      >
+                        {location}
+                      </Chip>
+                    ))
+                }
               </div>
             </div>
           )}

@@ -10,20 +10,12 @@ class UserDAO {
         } else {
           resolve(users[0]);
         }
-      }).catch((err) => { reject(err); });
+      }).catch(reject);
     });
   }
 
-  static fetch(id) {
-    return new Promise((resolve, reject) => {
-      User.findById(id).exec((err, user) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(user);
-        }
-      });
-    });
+  static async fetch(id) {
+    return await User.findById(id);
   }
 }
 

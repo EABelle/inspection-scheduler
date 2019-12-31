@@ -4,8 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 import Cookies from 'universal-cookie';
 
 const titles = {
-  calendar: 'Calendar de inspectors',
-  inspections: 'Listado de inspections',
+  calendar: 'Calendar',
+  inspections: 'Inspections',
   inspectors: 'Inspectors',
 };
 
@@ -31,7 +31,7 @@ const AppBar = ({ onOpenMenu, location, history }) => {
         <MuiAppBar
           title={title}
           iconClassNameRight="muidocs-icon-navigation-expand-more"
-          iconElementRight={<FlatButton label="Cerrar sesión" />}
+          iconElementRight={<FlatButton label="Logout" />}
           onLeftIconButtonClick={onOpenMenu}
           onRightIconButtonClick={onLogout}
         />

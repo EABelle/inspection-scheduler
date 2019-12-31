@@ -5,7 +5,6 @@ import sha256 from 'sha256';
 import Cookies from 'universal-cookie';
 import { Redirect } from 'react-router-dom';
 import { login } from '../api/login';
-import { isAuthenticated } from '../services/authService';
 
 class Login extends React.Component {
   constructor(props) {
@@ -16,10 +15,21 @@ class Login extends React.Component {
       redirectToReferrer: false,
       error: false,
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.login = this.login.bind(this);
+    this.handleKey = this.handleKey.bind(this);
   }
 
-  handleClick() {
+  handleKey(event) {
+    if (event.key === 'Enter') {
+      this.login()
+    } else {
+      if (this.state.error) {
+        this.setState({error: false})
+      }
+    }
+  }
+
+  login() {
     const payload = {
       username: this.state.username,
       password: sha256(this.state.password).toUpperCase(),
@@ -29,26 +39,25 @@ class Login extends React.Component {
         if (response.status === 200) {
           const cookies = new Cookies();
           cookies.set('inspector_token', response.data, { path: '/' });
-          console.log('Login successfull');
           this.setState(() => ({
             redirectToReferrer: true,
           }));
         } else {
-          console.log('Wrong username or password');
-          this.setState(() => ({
+          this.setState({
             error: true,
-          }));
+          });
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        this.setState({
+          error: true,
+        });
       });
   }
 
   render() {
     const { from } = this.props.location.state || { from: { pathname: '/inspections' } };
     const { redirectToReferrer } = this.state;
-    console.log(this.state)
     if (redirectToReferrer === true) {
       return <Redirect to={from} />;
     }
@@ -56,28 +65,34 @@ class Login extends React.Component {
     return (
       <form>
         <TextField
-          hintText="Ingrese su usuario"
-          floatingLabelText="Usuario"
+          hintText="Username"
+          floatingLabelText="Username"
           onChange={(event, newValue) => this.setState({ username: newValue })}
-          errorText={this.state.error ? 'Usuario o contraseña incorrectos' : ''}
+          onKeyUp={this.handleKey}
         />
         <br />
         <TextField
           type="password"
-          hintText="Ingrese su contraseña"
-          floatingLabelText="Contraseña"
+          hintText="Password"
+          floatingLabelText="Password"
           onChange={(event, newValue) => this.setState({ password: newValue })}
-          errorText={this.state.error ? 'Usuario o contraseña incorrectos' : ''}
+          onKeyUp={this.handleKey}
         />
         <br />
-        <RaisedButton label="Entrar" primary style={style} onClick={(event) => this.handleClick(event)} />
+        <RaisedButton label="Login" primary style={style.button} onClick={this.login} />
+        { this.state.error ? <p style={style.error}>Invalid username or password</p> : null }
       </form>
     );
   }
 }
 
 const style = {
-  margin: 15,
+  button: {
+    margin: 15
+  },
+  error: {
+    color: 'red'
+  }
 };
 
 export default Login;

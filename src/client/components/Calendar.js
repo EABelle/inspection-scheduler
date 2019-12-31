@@ -122,7 +122,7 @@ class Calendar extends React.Component {
       <div style={{ textAlign: 'left', padding: 16 }}>
 
         <DatePicker
-          floatingLabelText="Fecha"
+          floatingLabelText="Date"
           autoOk
           minDate={this.minDate}
           maxDate={this.maxDate}
@@ -132,7 +132,7 @@ class Calendar extends React.Component {
         />
 
         <Toggle
-          label="Sólo inspectors disponibles"
+          label="Only available inspectors"
           defaultToggled
           onToggle={this.handleToggle}
           style={styles.toggle}
@@ -143,10 +143,10 @@ class Calendar extends React.Component {
         <Table>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
-              <TableHeaderColumn>Nombre y Apellido</TableHeaderColumn>
-              <TableHeaderColumn>Inspections restantes</TableHeaderColumn>
-              <TableHeaderColumn>Habilitar</TableHeaderColumn>
-              <TableHeaderColumn>Inhabilitar</TableHeaderColumn>
+              <TableHeaderColumn>Name</TableHeaderColumn>
+              <TableHeaderColumn>Inspections left</TableHeaderColumn>
+              <TableHeaderColumn>Enable</TableHeaderColumn>
+              <TableHeaderColumn>Disable</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>

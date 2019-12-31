@@ -1,8 +1,6 @@
 import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 export const isAuthenticated = () => {
-  const cookies = new Cookies();
-  if (cookies.get('inspector_token')) {
-    return true;
-  } return false;
+  return !!cookies.get('inspector_token');
 };

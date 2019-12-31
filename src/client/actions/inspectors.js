@@ -18,7 +18,7 @@ export function loadInspectorsFail() {
 export function fetchInspectors(filters) {
   return (dispatch) => {
     const query = filters ? `?${qs.stringify(filters)}` : '';
-    return get(`/api/inspectors${query}`)
+    return get(`/inspectors${query}`)
       .then((response) => dispatch(loadInspectorsSuccess(response.data.data)))
       .catch((err) => {
         alert(err);

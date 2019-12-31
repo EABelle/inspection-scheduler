@@ -13,7 +13,7 @@ class LoginController {
       .then((token) => {
         res.setHeader('Authorization', token);
         res.status(200).send(token);
-      }).catch((err) => res.status(err.code || 400).send(err.message));
+      }).catch((err) => res.status(401).send(err.message));
   }
 }
 
