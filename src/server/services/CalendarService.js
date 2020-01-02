@@ -11,39 +11,26 @@ const InspectorService = require('./inspectorService');
 const InspectionService = require('./InspectionService');
 
 class CalendarService {
-  static formatDays(dateFrom) {
-    let days = {};
-    for (let day = 0; day <= 5; day++) {
-      const currentDate = new Date(dateFrom);
-      currentDate.setDate(dateFrom.getDate() + day);
-      const formattedDate = formatDate(currentDate);
-      days = {
-        ...days,
-        [formattedDate]: {
-          inspectors: {},
-        },
-      };
-    }
-    return days;
-  }
 
-  static fillWithInspectors(days, dateFrom, inspectors, onlyAvailableDays) {
+  static getInspectorsByDays(dateFrom, inspectors, onlyAvailableDays) {
+    const days = new Map();
     for (let day = 0; day <= 5; day++) {
+
       const currentDate = new Date(dateFrom);
       currentDate.setDate(dateFrom.getDate() + day);
-      const formattedDate = formatDate(currentDate);
       const dayOfTheWeek = currentDate.getDay();
+      const formattedDate = formatDate(currentDate);
+      const inspectorsOfTheDay = {};
+
       inspectors.forEach((inspector) => {
         inspector = inspector.toJSON();
-        if (
-          (
-            (onlyAvailableDays
-                        && !inspector.daysNotAble.find((date) => matchDate(formatDate(date), formattedDate)))
-                        || !onlyAvailableDays
-          )
-                    && inspector.times.find((dayData) => (dayData.day === dayOfTheWeek))
+        if ((
+            onlyAvailableDays && !inspector.daysNotAble.find((date) => matchDate(formatDate(date), formattedDate))
+            || !onlyAvailableDays
+            )
+            && inspector.times.find((dayData) => (dayData.day === dayOfTheWeek))
         ) {
-          days[formattedDate].inspectors[inspector._id] = {
+          inspectorsOfTheDay[inspector._id] = {
             daysNotAble: !!inspector.daysNotAble.find((date) => matchDate(formatDate(date), formattedDate)),
             daysUnlimited: !!inspector.daysUnlimited.find(
               (date) => matchDate(formatDate(date), formattedDate),
@@ -54,7 +41,9 @@ class CalendarService {
           };
         }
       });
+      days.set(formattedDate, inspectorsOfTheDay);
     }
+    return days;
   }
 
   static getHours(calendar) {
@@ -88,102 +77,82 @@ class CalendarService {
   static deleteUnavailableInspectors(days, inspections) {
     inspections.forEach(({ date, inspectorId }) => {
       const formattedDate = [date.getDate(), date.getMonth(), date.getFullYear()].join('|');
-      const dayIndex = days[formattedDate];
-      if (dayIndex && dayIndex.inspectors && dayIndex.inspectors[inspectorId]) {
-        if (dayIndex.inspectors[inspectorId].daysNotAble) {
-          unset(dayIndex.inspectors, inspectorId);
-        } else if (!dayIndex.inspectors[inspectorId].daysUnlimited) {
-          dayIndex.inspectors[inspectorId].maximumPerDay--;
-          if (dayIndex.inspectors[inspectorId].maximumPerDay <= 0) {
-            unset(dayIndex.inspectors, inspectorId);
+      const inspectors = days.get(formattedDate);
+      if (inspectors && inspectors[inspectorId]) {
+        if (inspectors[inspectorId].daysNotAble) {
+          unset(inspectors, inspectorId);
+        } else if (!inspectors[inspectorId].daysUnlimited) {
+          inspectors[inspectorId].maximumPerDay--;
+          if (inspectors[inspectorId].maximumPerDay <= 0) {
+            unset(inspectors, inspectorId);
           }
         }
+        days.set(formattedDate, inspectors)
       }
     });
+    return days;
   }
 
   static countAvailability(days, inspections) {
     inspections.forEach(({ date, inspector_id }) => {
       const formattedDate = [date.getDate(), date.getMonth(), date.getFullYear()].join('|');
-      const dayIndex = days[formattedDate];
-      if (dayIndex && dayIndex.inspectors && dayIndex.inspectors[inspector_id]) {
-        if (!dayIndex.inspectors[inspector_id].daysUnlimited) {
-          dayIndex.inspectors[inspector_id].maximumPerDay--;
+      const inspectors = days.get(formattedDate);
+      if (inspectors && inspectors[inspector_id]) {
+        if (!inspectors[inspector_id].daysUnlimited) {
+          inspectors[inspector_id].maximumPerDay--;
+          days.set(formattedDate, inspectors);
         }
       }
     });
+    return days;
   }
 
   static deleteDaysWithNoInspectors(days) {
-    for (const prop in days) {
-      if (isEmpty(days[prop].inspectors)) {
-        unset(days, prop);
+    days.forEach((inspectors, formattedDate) => {
+      if (isEmpty(inspectors)) {
+        days.delete(formattedDate);
       }
-    }
+    });
+    return days;
   }
 
   static formatMonths(days) {
-    return mapKeys(days, (dayValue, dayKey) => {
+    const daysObj = {};
+    days.forEach((dayValue, dayKey) => {
       const newKey = dayKey.split('|');
       newKey[1]++;
-      return newKey.join('|');
+      daysObj[newKey.join('|')] = dayValue;
     });
+    return daysObj;
   }
 
-  static getCalendar(inspectors, inspections) {
-    return new Promise((resolve) => {
+  static getCalendar(inspectors, inspections, onlyAvailableDays = false) {
       const dateFrom = new Date();
-      const days = this.formatDays(dateFrom);
-      this.fillWithInspectors(days, dateFrom, inspectors, true);
-      this.deleteUnavailableInspectors(days, inspections);
-      this.deleteDaysWithNoInspectors(days);
-      resolve(this.formatMonths(days));
-    });
+      let inspectorsByDays = this.getInspectorsByDays(dateFrom, inspectors, true);
+      if (onlyAvailableDays) {
+        inspectorsByDays = this.countAvailability(inspectorsByDays, inspections);
+      } else {
+        inspectorsByDays = this.deleteUnavailableInspectors(inspectorsByDays, inspections);
+        inspectorsByDays = this.deleteDaysWithNoInspectors(inspectorsByDays);
+      }
+      return this.formatMonths(inspectorsByDays);
   }
 
-  static getCalendarAllAvailabilities(inspectors, inspections) {
-    return new Promise((resolve) => {
-      const dateFrom = new Date();
-      const days = this.formatDays(dateFrom);
-      this.fillWithInspectors(days, dateFrom, inspectors);
-      this.countAvailability(days, inspections);
-      resolve(this.formatMonths(days));
-    });
+  static async find(inspectorFilter, onlyAvailableDays = false) {
+    const inspectors = await InspectorService.find(inspectorFilter.filterData());
+    const inspections = await InspectionService.getByInspectors(inspectors);
+    return this.getCalendar(inspectors, inspections, onlyAvailableDays);
   }
 
-  static find(inspectorFilter) {
-    return new Promise((resolve, reject) => {
-      InspectorService.find(inspectorFilter.filterData())
-        .then((inspectors) => InspectionService.getInspectionsFromInspectors(inspectors))
-        .then(([inspectors, inspections]) => this.getCalendar(inspectors, inspections))
-        .then(resolve)
-        .catch(reject);
-    });
-  }
-
-  static findDays(inspectorFilter) {
-    return new Promise((resolve, reject) => {
-      InspectorService.find(inspectorFilter.filterData())
-        .then((inspectors) => InspectionService.getInspectionsFromInspectors(inspectors))
-        .then(([inspectors, inspections]) => this.getCalendar(inspectors, inspections))
-        .then((calendar) => this.getHours(calendar))
-        .then((days) => days.reduce((acc, x) => {
-          for (const key in x) acc[key] = x[key];
-          return acc;
-        }, {}))
-        .then(resolve)
-        .catch(reject);
-    });
-  }
-
-  static findByIgnoreAvailability(inspectorFilter) {
-    return new Promise((resolve, reject) => {
-      InspectorService.find(inspectorFilter.filterData())
-        .then((inspectors) => InspectionService.getInspectionsFromInspectors(inspectors))
-        .then(([inspectors, inspections]) => this.getCalendarAllAvailabilities(inspectors, inspections))
-        .then(resolve)
-        .catch(reject);
-    });
+  static async findDays(inspectorFilter) {
+    const inspectors = await InspectorService.find(inspectorFilter.filterData());
+    const inspections = await InspectionService.getByInspectors(inspectors);
+    const calendar = this.getCalendar(inspectors, inspections);
+    const days = await this.getHours(calendar);
+    return days.reduce((acc, x) => {
+      for (const key in x) acc[key] = x[key];
+      return acc;
+    }, {});
   }
 }
 

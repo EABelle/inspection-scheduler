@@ -3,64 +3,35 @@ const InspectionFilter = require('../filters/InspectionFilter');
 const InspectionAssembler = require('../assembler/InspectionAssembler');
 
 class InspectionService {
+
   static get(id) {
-    return new Promise((resolve, reject) => {
-      InspectionDAO.fetch(id)
-        .then((inspection) => resolve(inspection))
-        .catch((err) => {
-          reject(err);
-        });
-    });
+    return InspectionDAO.findById(id);
   }
 
   static find(filterData) {
-    return new Promise((resolve, reject) => {
-      InspectionDAO.find(filterData)
-        .then(resolve)
-        .catch(reject);
-    });
+    return InspectionDAO.find(filterData);
   }
 
   static save(inspectionDTO) {
     const inspection = InspectionAssembler.fromDTO(inspectionDTO.data);
-    return new Promise((resolve, reject) => {
-      InspectionDAO.save(inspection)
-        .then((inspection) => resolve(inspection))
-        .catch((err) => reject(err));
-    });
+    return InspectionDAO.save(inspection);
   }
 
-  static update(id, inspectionDTO, set) {
-    return new Promise((resolve, reject) => {
-      InspectionDAO.update(id, inspectionDTO.getData(), set)
-        .then((inspection) => {
-          resolve(this.get(inspection._id));
-        })
-        .catch((err) => reject(err));
-    });
+  static async update(id, inspectionDTO, set) {
+    const inspection = await InspectionDAO.update(id, inspectionDTO.getData(), set);
+    return await this.get(inspection._id);
   }
 
   static delete(id) {
-    return new Promise((resolve, reject) => {
-      InspectionDAO.delete(id)
-        .then((deleted) => resolve(deleted))
-        .catch((err) => reject(err));
-    });
+    return InspectionDAO.delete(id);
   }
 
-  static getInspectionsFromInspectors(inspectors) {
-    return new Promise((resolve, reject) => {
-      /* if (!inspectors || inspectors.length === 0) {
-                resolve([])
-            } */
-      const inspectionFilter = new InspectionFilter();
-      inspectionFilter.fillData({
-        inspectors: inspectors.map(({ _id }) => (_id)),
-      });
-      InspectionDAO.find(inspectionFilter.filterData())
-        .then(inspections => resolve([inspectors, inspections]))
-        .catch(reject);
+  static async getByInspectors(inspectors) {
+    const inspectionFilter = new InspectionFilter();
+    inspectionFilter.fillData({
+      inspectors: inspectors.map(({ _id }) => (_id)),
     });
+    return await InspectionDAO.find(inspectionFilter.filterData());
   }
 }
 

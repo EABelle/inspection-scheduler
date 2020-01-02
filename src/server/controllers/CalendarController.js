@@ -44,7 +44,7 @@ class CalendarController {
 
     inspectorFilter.fillData({ locations: location });
 
-    CalendarService.findByIgnoreAvailability(inspectorFilter).then(
+    CalendarService.find(inspectorFilter, true).then(
       (calendar) => {
         res.send({
           data: calendar,

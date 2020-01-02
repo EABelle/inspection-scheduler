@@ -69,13 +69,9 @@ class InspectorService {
     });
   }
 
-  static isSomeoneAvailable(inspectors, location, day) {
-    return new Promise((resolve, reject) => {
-      InspectionService.getInspectionsFromInspectors(inspectors)
-        .then(([inspectors, inspections]) => this.findAvailableInspector(day, location, inspectors, inspections))
-        .then(resolve)
-        .catch(reject);
-    });
+  static async isSomeoneAvailable(inspectors, location, day) {
+    const inspections = await InspectionService.getByInspectors(inspectors);
+    return await this.findAvailableInspector(day, location, inspectors, inspections);
   }
 
   static save(inspectorDTO) {

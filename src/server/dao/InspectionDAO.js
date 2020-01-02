@@ -7,7 +7,7 @@ class InspectionDAO {
     return Inspection.find(filter);
   }
 
-  static fetch(id) {
+  static findById(id) {
     return Inspection.findById(id);
   }
 
