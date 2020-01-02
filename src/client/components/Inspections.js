@@ -20,24 +20,18 @@ const styles = {
 export class Inspections extends React.Component {
   constructor() {
     super();
-    this.state = {
-      day: null,
-      month: null,
-      year: null,
-    };
     this.currentDate = new Date();
+    this.state = {
+      day: this.currentDate.getDate(),
+      month: this.currentDate.getMonth() + 1,
+      year: this.currentDate.getFullYear(),
+    };
     this.handleChangeDate = this.handleChangeDate.bind(this);
     this.fetchInspections = this.fetchInspections.bind(this);
   }
 
   componentDidMount() {
-    this.setState({
-      day: this.currentDate.getDate(),
-      month: this.currentDate.getMonth() + 1,
-      year: this.currentDate.getFullYear(),
-    }, () => {
-      this.fetchInspections();
-    });
+    this.fetchInspections();
   }
 
   handleChangeDate(event, date) {
@@ -58,7 +52,7 @@ export class Inspections extends React.Component {
     return (
       <div style={{ textAlign: 'left', padding: 16 }}>
         <DatePicker
-          floatingLabelText="Fecha"
+          floatingLabelText="Date"
           autoOk
           onChange={this.handleChangeDate}
           style={styles.datePicker}
@@ -67,13 +61,12 @@ export class Inspections extends React.Component {
         <Table>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
-              <TableHeaderColumn>id</TableHeaderColumn>
-              <TableHeaderColumn>Asegurado</TableHeaderColumn>
-              <TableHeaderColumn>Patente</TableHeaderColumn>
-              <TableHeaderColumn>Vehículo</TableHeaderColumn>
-              <TableHeaderColumn>Dirección</TableHeaderColumn>
-              <TableHeaderColumn>Location</TableHeaderColumn>
-              <TableHeaderColumn>Horario</TableHeaderColumn>
+              <TableHeaderColumn>Owner</TableHeaderColumn>
+              <TableHeaderColumn>Domain</TableHeaderColumn>
+              <TableHeaderColumn>Vehicle</TableHeaderColumn>
+              <TableHeaderColumn>Adress</TableHeaderColumn>
+              <TableHeaderColumn>City</TableHeaderColumn>
+              <TableHeaderColumn>Time range</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false} stripedRows style={{ cursor: 'pointer' }}>
@@ -85,9 +78,6 @@ export class Inspections extends React.Component {
                       const hours = (new Date(date)).getHours();
                       return (
                         <TableRow key={_id}>
-                          <TableRowColumn>
-                            {_id}
-                          </TableRowColumn>
                           <TableRowColumn>
                             {`${owner.lastName}, ${owner.firstName}`}
                           </TableRowColumn>
