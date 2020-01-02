@@ -3,7 +3,7 @@ const InspectionDAO = require('../dao/InspectionDAO');
 const InspectionDTO = require('../dto/InspectionDTO');
 const InspectorDAO = require('../dao/InspectorDAO');
 const InspectionAssembler = require('../assembler/InspectionAssembler');
-const InspectorService = require('./inspectorService');
+const InspectorService = require('./InspectorService');
 const { buildDate } = require('../utils/formatDate');
 
 class AgendaService {

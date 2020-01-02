@@ -1,5 +1,5 @@
 
-const InspectorService = require('../services/inspectorService');
+const InspectorService = require('../services/InspectorService');
 const InspectorFilter = require('../filters/InspectorFilter');
 const InspectorDTO = require('../dto/InspectorDTO');
 

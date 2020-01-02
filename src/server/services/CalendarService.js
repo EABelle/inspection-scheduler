@@ -1,13 +1,12 @@
 
 const {
-  pick, isEmpty, unset, mapKeys, uniq, flatten,
+  pick, isEmpty, unset, uniq, flatten,
 } = require('lodash');
 const {
   formatDate, matchDate, buildDate, transformDateString,
 } = require('../utils/formatDate');
 
-const InspectorService = require('./inspectorService');
-
+const InspectorService = require('./InspectorService');
 const InspectionService = require('./InspectionService');
 
 class CalendarService {
