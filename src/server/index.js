@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const app = require('./app');
 
-const port = process.env.PORT || 3800;
+const port = process.env.SERVER_PORT || 3800;
 const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/inspectionScheduler';
 
 

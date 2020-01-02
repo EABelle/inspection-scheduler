@@ -7,7 +7,7 @@ const InspectorAssembler = require('../assembler/InspectorAssembler');
 class InspectorService {
   static get(id) {
     return new Promise((resolve, reject) => {
-      InspectorDAO.fetch(id)
+      InspectorDAO.findById(id)
         .then((inspector) => resolve(inspector))
         .catch((err) => {
           reject(err);

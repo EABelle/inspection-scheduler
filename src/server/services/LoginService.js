@@ -6,15 +6,15 @@ const redisClient = require('../redisClient');
 
 
 class LoginService {
-  static login(filterData) {
-    return new Promise((resolve, reject) => {
-      UserDAO.find(filterData)
-        .then(({ username, password }) => {
-          const token = jwt.sign({ username, password }, 'PUBLIC');
-          redisClient.set(username, token, redis.print);
-          resolve(token);
-        }).catch((err) => reject(err));
-    });
+  static async login(filterData) {
+      const users = await UserDAO.find(filterData);
+      if (!users || users.length === 0) {
+          throw new Error("User or password not valid");
+      }
+      const { username, password } = users[0];
+      const token = jwt.sign({ username, password }, 'PUBLIC');
+      redisClient.set(username, token, redis.print);
+      return token;
   }
 }
 module.exports = LoginService;

@@ -3,7 +3,7 @@ const LocationDAO = require('../dao/LocationDAO');
 class LocationService {
 
   static async get(id) {
-    return await LocationDAO.fetch(id);
+    return await LocationDAO.findById(id);
   }
 
   static async find(filterData) {

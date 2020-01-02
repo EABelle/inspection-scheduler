@@ -2,32 +2,13 @@
 const Inspection = require('../models/Inspection');
 
 class InspectionDAO {
-  static find(filter) {
-    return new Promise((resolve, reject) => {
-      Inspection.find(filter)
-          .then(resolve)
-          .catch(reject);
-    });
-  }
 
-  static findWithInspectors(inspectors, filter) {
-    return new Promise((resolve, reject) => {
-      Inspection.find(filter).then((inspections) => {
-        resolve([inspectors, inspections]);
-      }).catch(reject);
-    });
+  static find(filter) {
+    return Inspection.find(filter);
   }
 
   static fetch(id) {
-    return new Promise((resolve, reject) => {
-      Inspection.findById(id).exec((err, inspection) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(inspection);
-        }
-      });
-    });
+    return Inspection.findById(id);
   }
 
   static save(inspectionData) {

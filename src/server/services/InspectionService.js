@@ -57,8 +57,8 @@ class InspectionService {
       inspectionFilter.fillData({
         inspectors: inspectors.map(({ _id }) => (_id)),
       });
-      InspectionDAO.findWithInspectors(inspectors, inspectionFilter.filterData())
-        .then(resolve)
+      InspectionDAO.find(inspectionFilter.filterData())
+        .then(inspections => resolve([inspectors, inspections]))
         .catch(reject);
     });
   }

@@ -4,13 +4,13 @@ const Inspector = require('../models/Inspector');
 const { addDays, buildDate, transformDateString } = require('../utils/formatDate');
 
 class InspectorDAO {
-  static async find(filter) {
+  static find(filter) {
     const query = !filter.locations && !filter.id ? undefined : filter;
-    return await Inspector.find(query);
+    return Inspector.find(query);
   }
 
-  static async fetch(id) {
-    return await Inspector.findById(id);
+  static findById(id) {
+    return Inspector.findById(id);
   }
 
   static save(inspectorData) {
@@ -63,15 +63,7 @@ class InspectorDAO {
   }
 
   static delete(id) {
-    return new Promise((resolve, reject) => {
-      Inspector.findByIdAndRemove(id).exec((err, deleted) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(deleted);
-        }
-      });
-    });
+    return Inspector.findByIdAndRemove(id);
   }
 }
 
