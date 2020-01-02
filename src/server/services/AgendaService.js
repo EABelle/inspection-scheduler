@@ -7,29 +7,22 @@ const InspectorService = require('./inspectorService');
 const { buildDate } = require('../utils/formatDate');
 
 class AgendaService {
-  static save(inspectionData, inspectorFilter) {
-    return new Promise((resolve, reject) => {
+  static async save(inspectionData, inspectorFilter) {
       const inspectionDTO = new InspectionDTO();
-      InspectorDAO.find(inspectorFilter.filterData())
-        .then((inspectors) => {
-            return InspectorService.isSomeoneAvailable(inspectors, inspectionData.meetingDetails.city, inspectionData.meetingDetails.date)})
-        .then(({ availableInspector, candidates }) => {
-          if (!availableInspector) {
-            reject(() => ({ message: 'no hay disponibilidad' }));
-          }
-          inspectionData = {
-            ...inspectionData,
-            candidates,
-            inspectorId: availableInspector,
-            date: buildDate(inspectionData.meetingDetails.date, inspectionData.meetingDetails.time),
-          };
-          inspectionDTO.hydrate(inspectionData);
-          return InspectionAssembler.fromDTO(inspectionDTO.data);
-        })
-        .then((inspection) => InspectionDAO.save(inspection))
-        .then(resolve)
-        .catch(reject);
-    });
+      const inspectors = await InspectorDAO.find(inspectorFilter.filterData());
+      const { availableInspector, candidates } = await InspectorService.isSomeoneAvailable(inspectors, inspectionData.meetingDetails.city, inspectionData.meetingDetails.date);
+      if (!availableInspector) {
+          throw new Error ('No available inspectors');
+      }
+      const payload = {
+        ...inspectionData,
+        candidates,
+        inspectorId: availableInspector,
+        date: buildDate(inspectionData.meetingDetails.date, inspectionData.meetingDetails.time),
+      };
+      inspectionDTO.hydrate(payload);
+      const inspection = InspectionAssembler.fromDTO(inspectionDTO.data);
+      return await InspectionDAO.save(inspection);
   }
 }
 module.exports = AgendaService;
