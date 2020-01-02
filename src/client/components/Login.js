@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import sha256 from 'sha256';
@@ -6,58 +6,42 @@ import Cookies from 'universal-cookie';
 import { Redirect } from 'react-router-dom';
 import { login } from '../api/login';
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: '',
-      redirectToReferrer: false,
-      error: false,
-    };
-    this.login = this.login.bind(this);
-    this.handleKey = this.handleKey.bind(this);
-  }
+const Login = (props) => {
 
-  handleKey(event) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+  const [redirectToReferrer, setRedirectToReferrer] = useState(false);
+
+  const handleKey = (event) => {
     if (event.key === 'Enter') {
-      this.login()
+      performLogin()
     } else {
-      if (this.state.error) {
-        this.setState({error: false})
+      if (error) {
+        setError(false)
       }
     }
-  }
+  };
 
-  login() {
+  const performLogin = () => {
     const payload = {
-      username: this.state.username,
-      password: sha256(this.state.password).toUpperCase(),
+      username,
+      password: sha256(password).toUpperCase(),
     };
     login(payload)
       .then((response) => {
         if (response.status === 200) {
           const cookies = new Cookies();
           cookies.set('inspector_token', response.data, { path: '/' });
-          this.setState(() => ({
-            redirectToReferrer: true,
-          }));
+          setRedirectToReferrer(true);
         } else {
-          this.setState({
-            error: true,
-          });
+          setError(true);
         }
       })
-      .catch(() => {
-        this.setState({
-          error: true,
-        });
-      });
-  }
+      .catch(setError(true));
+    };
 
-  render() {
-    const { from } = this.props.location.state || { from: { pathname: '/inspections' } };
-    const { redirectToReferrer } = this.state;
+    const { from } = props.location.state || { from: { pathname: '/inspections' } };
     if (redirectToReferrer === true) {
       return <Redirect to={from} />;
     }
@@ -67,24 +51,23 @@ class Login extends React.Component {
         <TextField
           hintText="Username"
           floatingLabelText="Username"
-          onChange={(event, newValue) => this.setState({ username: newValue })}
-          onKeyUp={this.handleKey}
+          onChange={(event, newValue) => setUsername(newValue)}
+          onKeyUp={handleKey}
         />
         <br />
         <TextField
           type="password"
           hintText="Password"
           floatingLabelText="Password"
-          onChange={(event, newValue) => this.setState({ password: newValue })}
-          onKeyUp={this.handleKey}
+          onChange={(event, newValue) => setPassword(newValue)}
+          onKeyUp={handleKey}
         />
         <br />
-        <RaisedButton label="Login" primary style={style.button} onClick={this.login} />
-        { this.state.error ? <p style={style.error}>Invalid username or password</p> : null }
+        <RaisedButton label="Login" primary style={style.button} onClick={performLogin} />
+        { error ? <p style={style.error}>Invalid username or password</p> : null }
       </form>
     );
-  }
-}
+};
 
 const style = {
   button: {
