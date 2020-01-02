@@ -39,7 +39,6 @@ class InspectorDAO {
       inspector.daysUnlimited || inspector.daysNotAble
     ) {
       const action = inspector.daysUnlimited ? 'daysUnlimited' : 'daysNotAble';
-      console.log(directive, inspector[action]);
       dtoUpdate = {
         [directive]: {
           [action]: set

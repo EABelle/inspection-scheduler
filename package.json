@@ -7,9 +7,9 @@
   "author": "eabelle",
   "license": "ISC",
   "scripts": {
-    "start": "npm run start:server && npm run start:front",
+    "start": "npm run start:server && npm run start:client",
     "build": "react-scripts build",
-    "start:front": "NODE_ENV=development react-scripts start",
+    "start:client": "NODE_ENV=development react-scripts start",
     "start:server": "NODE_ENV=development API_KEY=TEST nodemon src/server/index.js",
     "test:front": "react-scripts test --env=jsdom",
     "test:server": "echo \"Error: no test specified\" && exit 1",

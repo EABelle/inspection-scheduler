@@ -83,7 +83,6 @@ export class Inspections extends React.Component {
                       _id, owner, vehicle, date,
                     }) => {
                       const hours = (new Date(date)).getHours();
-                      console.log(owner);
                       return (
                         <TableRow key={_id}>
                           <TableRowColumn>

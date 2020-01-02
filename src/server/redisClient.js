@@ -16,7 +16,10 @@ let client;
 if (process.env.NODE_ENV === 'development') {
   client = devUsers();
 } else {
-  client = redis.createClient(process.env.REDIS_URL);
+  client = redis.createClient({
+    host: 'redis',
+    port: 6379
+  });
   client.on('connect', () => {
     console.log('Redis connected');
   });

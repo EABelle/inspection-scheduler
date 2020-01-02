@@ -11,7 +11,8 @@ class AgendaService {
     return new Promise((resolve, reject) => {
       const inspectionDTO = new InspectionDTO();
       InspectorDAO.find(inspectorFilter.filterData())
-        .then((inspectors) => InspectorService.isSomeoneAvailable(inspectors, inspectionData.inspection.location, inspectionData.inspection.day))
+        .then((inspectors) => {
+            return InspectorService.isSomeoneAvailable(inspectors, inspectionData.meetingDetails.city, inspectionData.meetingDetails.date)})
         .then(({ availableInspector, candidates }) => {
           if (!availableInspector) {
             reject(() => ({ message: 'no hay disponibilidad' }));
@@ -20,7 +21,7 @@ class AgendaService {
             ...inspectionData,
             candidates,
             inspectorId: availableInspector,
-            date: buildDate(inspectionData.inspection.day, inspectionData.inspection.time),
+            date: buildDate(inspectionData.meetingDetails.date, inspectionData.meetingDetails.time),
           };
           inspectionDTO.hydrate(inspectionData);
           return InspectionAssembler.fromDTO(inspectionDTO.data);

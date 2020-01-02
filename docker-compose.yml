@@ -1,0 +1,27 @@
+version: "3"
+services:
+  web:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "${DOCKER_SERVER_PORTS}"
+      - "${DOCKER_CLIENT_PORTS}"
+      - 80:80
+    depends_on:
+      - mongodb
+      - redis
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    env_file:
+      - .env
+    ports:
+      - "${DOCKER_MONGO_PORTS}"
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
