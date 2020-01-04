@@ -16,7 +16,6 @@ const compareToken = (username, token) => (new Promise((resolve, reject) => {
       reject();
     }
     if (comparedToken === token) {
-      console.log('TOKEN', comparedToken);
       resolve();
     }
     reject();

@@ -9,9 +9,10 @@ export function loadInspectionsSuccess(inspections) {
   };
 }
 
-export function loadInspectionsFail() {
+export function loadInspectionsFail(err) {
   return {
     type: SET_DEFAULT_INSPECTIONS,
+    payload: err
   };
 }
 
@@ -22,9 +23,6 @@ export function fetchInspections(filters) {
     const query = filters ? `?${qs.stringify(filters)}` : '';
     return get(`${url}${query}`)
       .then((response) => dispatch(loadInspectionsSuccess(response.data)))
-      .catch((err) => {
-        alert(err);
-        return dispatch(loadInspectionsFail());
-      });
+      .catch((err) => dispatch(loadInspectionsFail(err)));
   };
 }

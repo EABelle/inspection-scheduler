@@ -10,23 +10,28 @@ const axios = Axios.create({
 
 axios.defaults.headers.common['X-Api-Key'] = config.apikey;
 
-export function get(url, customConfig) {
+function getHeaders(customConfig) {
   const Authorization = cookies.get('inspector_token');
   const authHeaders = Authorization ? { Authorization } : {};
-  const headers = customConfig ? { ...customConfig.headers, ...authHeaders } : { ...authHeaders };
-  return axios.get(url, { headers, ...customConfig }).catch((err) => { alert(err); });
+  return customConfig ? { ...customConfig.headers, ...authHeaders } : { ...authHeaders };
+}
+
+export function get(url, customConfig) {
+  const headers = getHeaders(customConfig);
+  return axios.get(url, { headers, ...customConfig });
 }
 
 export function post(url, body, customConfig) {
-  const Authorization = cookies.get('inspector_token');
-  const authHeaders = Authorization ? { Authorization } : {};
-  const headers = customConfig ? { ...customConfig.headers, ...authHeaders } : { ...authHeaders };
+  const headers = getHeaders(customConfig);
   return axios.post(url, body, { headers, ...customConfig });
 }
 
 export function put(url, body, customConfig) {
-  const Authorization = cookies.get('inspector_token');
-  const authHeaders = Authorization ? { Authorization } : {};
-  const headers = customConfig ? { ...customConfig.headers, ...authHeaders } : { ...authHeaders };
+  const headers = getHeaders(customConfig);
   return axios.put(url, body, { headers, ...customConfig });
+}
+
+export function delete_(url, body, customConfig) {
+  const headers = getHeaders(customConfig);
+  return axios.delete(url, { headers, ...customConfig });
 }

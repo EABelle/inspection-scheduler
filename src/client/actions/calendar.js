@@ -9,9 +9,10 @@ export function loadCalendarSuccess(calendar) {
   };
 }
 
-export function loadCalendarFail() {
+export function loadCalendarFail(err) {
   return {
     type: SET_DEFAULT_CALENDAR,
+    payload: err
   };
 }
 
@@ -23,10 +24,8 @@ export function fetchCalendar(filters) {
     }
     const query = filters ? `?${qs.stringify(filters)}` : '';
     return get(`${url}${query}`)
-      .then((response) => dispatch(loadCalendarSuccess(response.data.data)))
-      .catch((err) => {
-        alert(err);
-        return dispatch(loadCalendarFail());
-      });
+      .then((response) => {
+        dispatch(loadCalendarSuccess(response.data))})
+      .catch((err) => dispatch(loadCalendarFail(err)));
   };
 }

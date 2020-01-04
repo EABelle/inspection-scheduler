@@ -1,7 +1,7 @@
 const InspectionService = require('./InspectionService');
 const InspectorDAO = require('../dao/InspectorDAO');
 const InspectorFilter = require('../filters/InspectorFilter');
-const { formatDate, matchDate } = require('../utils/formatDate');
+const { formatDate, matchDate, buildDate } = require('../utils/formatDate');
 const InspectorAssembler = require('../assembler/InspectorAssembler');
 
 class InspectorService {
@@ -71,6 +71,28 @@ class InspectorService {
 
   static delete(id) {
     return InspectorDAO.delete(id);
+  }
+
+  static deleteCustomDate(id, date) {
+    return InspectorDAO.deleteCustomDate(id, buildDate(date));
+  }
+
+  static async addAvailableDate(id, customDateDTO) {
+    const inspector = await this.get(id);
+    const formattedDate = customDateDTO.getData().date;
+    if (inspector.daysUnlimited.find(date => matchDate(formatDate(date), formattedDate))) {
+      throw new Error("Date has been already set");
+    }
+    return await InspectorDAO.setDayUnlimited(id, buildDate(formattedDate));
+  }
+
+  static async addUnavailableDate(id, customDateDTO) {
+    const inspector = await this.get(id);
+    const formattedDate = customDateDTO.getData().date;
+    if (inspector.daysNotAble.find(date => matchDate(formatDate(date), formattedDate))) {
+      throw new Error("Date has been already set");
+    }
+    return await InspectorDAO.setDayNotAble(id, buildDate(formattedDate));
   }
 }
 

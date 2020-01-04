@@ -13,11 +13,9 @@ class LocationController {
     LocationService.find(locationFilter.data)
       .then(
         (location) => {
-          res.status(200).send({
-            data: location,
-          });
+          res.status(200).send(location);
         },
-      ).catch((err) => res.status(err.code || 400).send(err.message));
+      ).catch((err) => res.status(err.code || 500).send(err.message));
   }
 }
 

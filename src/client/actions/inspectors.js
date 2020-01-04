@@ -9,9 +9,10 @@ export function loadInspectorsSuccess(inspectors) {
   };
 }
 
-export function loadInspectorsFail() {
+export function loadInspectorsFail(err) {
   return {
     type: SET_DEFAULT_INSPECTORS,
+    payload: err
   };
 }
 
@@ -19,10 +20,7 @@ export function fetchInspectors(filters) {
   return (dispatch) => {
     const query = filters ? `?${qs.stringify(filters)}` : '';
     return get(`/inspectors${query}`)
-      .then((response) => dispatch(loadInspectorsSuccess(response.data.data)))
-      .catch((err) => {
-        alert(err);
-        return dispatch(loadInspectorsFail());
-      });
+      .then((response) => dispatch(loadInspectorsSuccess(response.data)))
+      .catch((err) => dispatch(loadInspectorsFail(err)));
   };
 }

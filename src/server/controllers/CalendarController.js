@@ -13,11 +13,9 @@ class CalendarController {
     CalendarService.find(inspectorFilter)
       .then(
         (calendar) => {
-          res.send({
-            data: calendar,
-          });
+          res.send(calendar);
         },
-      ).catch((err) => res.status(err.code || 400).send(err.message));
+      ).catch((err) => res.status(err.code || 500).send(err.message));
   }
 
   static getDaysOnly(req, res) {
@@ -30,11 +28,9 @@ class CalendarController {
     CalendarService.findDays(inspectorFilter)
       .then(
         (calendar) => {
-          res.send({
-            data: calendar,
-          });
+          res.send(calendar);
         },
-      ).catch((err) => res.status(err.code || 400).send(err.message));
+      ).catch((err) => res.status(err.code || 500).send(err.message));
   }
 
   static getByIgnoreAvailability(req, res) {
@@ -46,11 +42,9 @@ class CalendarController {
 
     CalendarService.find(inspectorFilter, true).then(
       (calendar) => {
-        res.send({
-          data: calendar,
-        });
+        res.send(calendar);
       },
-    );
+    ).catch((err) => res.status(err.code || 500).send(err.message));
   }
 }
 

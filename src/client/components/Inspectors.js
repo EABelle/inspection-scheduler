@@ -86,10 +86,10 @@ class Inspectors extends React.Component {
         <Table>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
-              <TableHeaderColumn>Nombre y Apellido</TableHeaderColumn>
-              <TableHeaderColumn>Días</TableHeaderColumn>
-              <TableHeaderColumn>Máximo por día</TableHeaderColumn>
-              <TableHeaderColumn>Acciones</TableHeaderColumn>
+              <TableHeaderColumn>Full name</TableHeaderColumn>
+              <TableHeaderColumn>Working days</TableHeaderColumn>
+              <TableHeaderColumn>Maximum per day</TableHeaderColumn>
+              <TableHeaderColumn>Actions</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>

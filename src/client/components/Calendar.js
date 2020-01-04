@@ -14,7 +14,7 @@ import DatePicker from 'material-ui/DatePicker';
 import Toggle from 'material-ui/Toggle';
 import RaisedButton from 'material-ui/RaisedButton';
 import { fetchCalendar } from '../actions/calendar';
-import { setEnableProp, setDisableProp } from '../api/inspector';
+import { setEnableProp, setDisableProp, restoreCustomDate } from '../api/inspector';
 
 const styles = {
   toggle: {
@@ -34,11 +34,12 @@ const styles = {
 class Calendar extends React.Component {
   constructor(props) {
     super(props);
+    const date = new Date(Date.now());
     this.state = {
       open: false,
-      day: null,
-      month: null,
-      year: null,
+      day: date.getDate(),
+      month: date.getMonth() + 1,
+      year: date.getFullYear(),
       onlyAvailableInspectors: true,
     };
     const minDate = new Date();
@@ -56,7 +57,6 @@ class Calendar extends React.Component {
     this.fetchCalendar = this.fetchCalendar.bind(this);
     this.enable = this.enable.bind(this);
     this.disable = this.disable.bind(this);
-    this.enableOrDisable = this.enableOrDisable.bind(this);
   }
 
   componentDidMount() {
@@ -85,24 +85,32 @@ class Calendar extends React.Component {
     this.props.fetchCalendar({ onlyAvailableInspectors: this.state.onlyAvailableInspectors });
   }
 
-  enable(inspectorId, set) {
-    this.enableOrDisable(inspectorId, set, setEnableProp);
-  }
-
-  disable(inspectorId, set) {
-    this.enableOrDisable(inspectorId, set, setDisableProp);
-  }
-
-  enableOrDisable(inspectorId, set, action) {
+  async enable(inspectorId, isSet) {
     const { day, month, year } = this.state;
-    action(inspectorId, [day, month, year].join('|'), set)
-      .then(() => this.fetchCalendar());
+    const date = [day, month, year].join('|');
+    if (isSet) {
+      await restoreCustomDate(inspectorId, date);
+    } else {
+      await setEnableProp(inspectorId, date);
+    }
+    await this.fetchCalendar()
+  }
+
+  async disable(inspectorId, isSet) {
+    const { day, month, year } = this.state;
+    const date = [day, month, year].join('|');
+    if (isSet) {
+      await restoreCustomDate(inspectorId, date);
+    } else {
+      await setDisableProp(inspectorId, date);
+    }
+    await this.fetchCalendar();
   }
 
   render() {
     const actions = [
       <FlatButton
-        label="Cerrar"
+        label="Close"
         primary
         onClick={this.handleClose}
       />,
@@ -111,7 +119,7 @@ class Calendar extends React.Component {
     const { day, month, year } = this.state;
     const formattedDate = day && month && year ? `${day}|${month}|${year}` : null;
     const availableInspectors = formattedDate && this.props.calendar[formattedDate]
-      ? this.props.calendar[formattedDate].inspectors
+      ? this.props.calendar[formattedDate]
       : [];
 
     const availableInspectorsArray = Object.keys(availableInspectors).map((inspector) => ({
@@ -165,14 +173,14 @@ class Calendar extends React.Component {
                     <RaisedButton
                       label={daysUnlimited ? 'Habilitado' : 'Habilitar'}
                       primary={daysUnlimited}
-                      onClick={() => this.enable(id, !daysUnlimited)}
+                      onClick={() => this.enable(id, daysUnlimited)}
                     />
                   </TableRowColumn>
                   <TableRowColumn>
                     <RaisedButton
                       label={daysNotAble ? 'Inhabilitado' : 'Inhabilitar'}
                       primary={daysNotAble}
-                      onClick={() => this.disable(id, !daysNotAble)}
+                      onClick={() => this.disable(id, daysNotAble)}
                     />
                   </TableRowColumn>
                 </TableRow>

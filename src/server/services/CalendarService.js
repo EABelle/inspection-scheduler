@@ -11,7 +11,7 @@ const InspectionService = require('./InspectionService');
 
 class CalendarService {
 
-  static getInspectorsByDays(dateFrom, inspectors, onlyAvailableDays) {
+  static getInspectorsByDays(dateFrom, inspectors, onlyAvailable = false) {
     const days = new Map();
     for (let day = 0; day <= 5; day++) {
 
@@ -24,8 +24,8 @@ class CalendarService {
       inspectors.forEach((inspector) => {
         inspector = inspector.toJSON();
         if ((
-            onlyAvailableDays && !inspector.daysNotAble.find((date) => matchDate(formatDate(date), formattedDate))
-            || !onlyAvailableDays
+            onlyAvailable && !inspector.daysNotAble.find((date) => matchDate(formatDate(date), formattedDate))
+            || !onlyAvailable
             )
             && inspector.times.find((dayData) => (dayData.day === dayOfTheWeek))
         ) {
@@ -125,22 +125,22 @@ class CalendarService {
     return daysObj;
   }
 
-  static getCalendar(inspectors, inspections, onlyAvailableDays = false) {
+  static getCalendar(inspectors, inspections, onlyAvailable = false) {
       const dateFrom = new Date();
-      let inspectorsByDays = this.getInspectorsByDays(dateFrom, inspectors, true);
-      if (onlyAvailableDays) {
+      let inspectorsByDays = this.getInspectorsByDays(dateFrom, inspectors, onlyAvailable);
+      if (onlyAvailable) {
         inspectorsByDays = this.countAvailability(inspectorsByDays, inspections);
       } else {
         inspectorsByDays = this.deleteUnavailableInspectors(inspectorsByDays, inspections);
         inspectorsByDays = this.deleteDaysWithNoInspectors(inspectorsByDays);
       }
-      return this.formatMonths(inspectorsByDays);
+    return this.formatMonths(inspectorsByDays);
   }
 
-  static async find(inspectorFilter, onlyAvailableDays = false) {
+  static async find(inspectorFilter, onlyAvailable = false) {
     const inspectors = await InspectorService.find(inspectorFilter.filterData());
     const inspections = await InspectionService.getByInspectors(inspectors);
-    return this.getCalendar(inspectors, inspections, onlyAvailableDays);
+    return this.getCalendar(inspectors, inspections, onlyAvailable);
   }
 
   static async findDays(inspectorFilter) {
