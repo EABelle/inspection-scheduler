@@ -1,22 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { connect } from 'react-redux';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import DatePicker from 'material-ui/DatePicker';
-import Toggle from 'material-ui/Toggle';
-import RaisedButton from 'material-ui/RaisedButton';
 import { fetchCalendar } from '../actions/calendar';
 import { setEnableProp, setDisableProp, restoreCustomDate } from '../api/inspector';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  DatePicker,
+} from '@material-ui/pickers';
+import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
+import { makeStyles } from '@material-ui/core/styles';
+import {Button, Paper, TableContainer, Table, TableHead, TableRow, TableBody, TableCell} from '@material-ui/core';
 
-const styles = {
+const useStyles = makeStyles(theme => ({
+  calendar: {
+    padding: 16,
+  },
+  filters: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
   toggle: {
     marginBottom: 16,
     maxWidth: 400,
@@ -28,178 +31,147 @@ const styles = {
     display: 'inline-block',
   },
   toggleLabel: {
-    width: 300,
-  },
-};
-class Calendar extends React.Component {
-  constructor(props) {
-    super(props);
-    const date = new Date(Date.now());
-    this.state = {
-      open: false,
-      day: date.getDate(),
-      month: date.getMonth() + 1,
-      year: date.getFullYear(),
-      onlyAvailableInspectors: true,
-    };
-    const minDate = new Date();
-    minDate.setHours(0, 0, 0, 0);
-    const maxDate = new Date();
-    maxDate.setDate(minDate.getDate() + 5);
-    maxDate.setHours(0, 0, 0, 0);
-
-    this.minDate = minDate;
-    this.maxDate = maxDate;
-
-    this.handleChangeDate = this.handleChangeDate.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleToggle = this.handleToggle.bind(this);
-    this.fetchCalendar = this.fetchCalendar.bind(this);
-    this.enable = this.enable.bind(this);
-    this.disable = this.disable.bind(this);
+    marginRight: 16
   }
+}));
 
-  componentDidMount() {
-    this.props.fetchCalendar({ onlyAvailableInspectors: true });
-  }
+const Calendar = (props) => {
+  const classes = useStyles();
+  const date = new Date(Date.now());
+  const [ day, setDay ] = useState(date.getDate());
+  const [ month, setMonth ] = useState(date.getMonth() + 1);
+  const [ year, setYear] = useState(date.getFullYear());
+  const [ onlyAvailableInspectors, setOnlyAvailableInspectors ] = useState(false);
 
-  handleChangeDate(event, date) {
-    this.setState({
-      day: date.getDate(),
-      month: date.getMonth() + 1,
-      year: date.getFullYear(),
-    });
-  }
+  const minDate = new Date();
+  minDate.setHours(0, 0, 0, 0);
+  const maxDate = new Date();
+  maxDate.setDate(minDate.getDate() + 5);
+  maxDate.setHours(0, 0, 0, 0);
 
-  handleClose() {
-    this.setState({ open: false });
-  }
+  const fetchCalendar = () => {
+    props.fetchCalendar({ onlyAvailableInspectors });
+  };
+  React.useEffect(fetchCalendar, [onlyAvailableInspectors]);
 
-  handleToggle() {
-    this.setState({ onlyAvailableInspectors: !this.state.onlyAvailableInspectors }, () => {
-      this.fetchCalendar();
-    });
-  }
+  const handleDateChange = (date) => {
+    setDay(date.getDate());
+    setMonth(date.getMonth() + 1);
+    setYear(date.getFullYear());
+    selectDate(date);
+  };
 
-  fetchCalendar() {
-    this.props.fetchCalendar({ onlyAvailableInspectors: this.state.onlyAvailableInspectors });
-  }
+  const handleToggle = () => {
+    setOnlyAvailableInspectors(!onlyAvailableInspectors);
+  };
 
-  async enable(inspectorId, isSet) {
-    const { day, month, year } = this.state;
+  const enable = async (inspectorId, isSet) => {
     const date = [day, month, year].join('|');
     if (isSet) {
       await restoreCustomDate(inspectorId, date);
     } else {
       await setEnableProp(inspectorId, date);
     }
-    await this.fetchCalendar()
-  }
+    await fetchCalendar();
+  };
 
-  async disable(inspectorId, isSet) {
-    const { day, month, year } = this.state;
+  const disable = async (inspectorId, isSet) => {
     const date = [day, month, year].join('|');
     if (isSet) {
       await restoreCustomDate(inspectorId, date);
     } else {
       await setDisableProp(inspectorId, date);
     }
-    await this.fetchCalendar();
-  }
+    await fetchCalendar();
+  };
 
-  render() {
-    const actions = [
-      <FlatButton
-        label="Close"
-        primary
-        onClick={this.handleClose}
-      />,
-    ];
-
-    const { day, month, year } = this.state;
     const formattedDate = day && month && year ? `${day}|${month}|${year}` : null;
-    const availableInspectors = formattedDate && this.props.calendar[formattedDate]
-      ? this.props.calendar[formattedDate]
+    const availableInspectors = formattedDate && props.calendar[formattedDate]
+      ? props.calendar[formattedDate]
       : [];
 
     const availableInspectorsArray = Object.keys(availableInspectors).map((inspector) => ({
       id: inspector, ...availableInspectors[inspector],
     }));
 
+    const [selectedDate, selectDate] = React.useState(minDate);
+
+
     return (
-      <div style={{ textAlign: 'left', padding: 16 }}>
+      <div className={classes.calendar}>
+        <div className={classes.filters}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePicker
+                emptyLabel="Date"
+                autoOk
+                minDate={minDate}
+                maxDate={maxDate}
+                onChange={handleDateChange}
+                className={classes.datePicker}
+                value={selectedDate}
+                variant="inline"
+            />
+          </MuiPickersUtilsProvider>
 
-        <DatePicker
-          floatingLabelText="Date"
-          autoOk
-          minDate={this.minDate}
-          maxDate={this.maxDate}
-          onChange={this.handleChangeDate}
-          style={styles.datePicker}
-          defaultDate={this.minDate}
-        />
+          <div className={classes.toggleContainer}>
+            <label className={classes.toggleLabel}>Only available inspectors</label>
+            <ToggleButtonGroup exclusive value={onlyAvailableInspectors} onChange={handleToggle}>
+              <ToggleButton value={true}>
+                YES
+              </ToggleButton>
+              <ToggleButton value={false}>
+                NO
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </div>
+        </div>
 
-        <Toggle
-          label="Only available inspectors"
-          defaultToggled
-          onToggle={this.handleToggle}
-          style={styles.toggle}
-          labelPosition="right"
-          labelStyle={styles.toggleLabel}
-        />
-
-        <Table>
-          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow>
-              <TableHeaderColumn>Name</TableHeaderColumn>
-              <TableHeaderColumn>Inspections left</TableHeaderColumn>
-              <TableHeaderColumn>Enable</TableHeaderColumn>
-              <TableHeaderColumn>Disable</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody displayRowCheckbox={false}>
-            {formattedDate && this.props.calendar[formattedDate]
-              ? availableInspectorsArray.map(({
-                id, fullName, daysUnlimited, daysNotAble, maximumPerDay,
-              }) => (
-                <TableRow key={id}>
-                  <TableRowColumn>
-                    {fullName}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    {!daysUnlimited && !daysNotAble ? maximumPerDay : null}
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <RaisedButton
-                      label={daysUnlimited ? 'Habilitado' : 'Habilitar'}
-                      primary={daysUnlimited}
-                      onClick={() => this.enable(id, daysUnlimited)}
-                    />
-                  </TableRowColumn>
-                  <TableRowColumn>
-                    <RaisedButton
-                      label={daysNotAble ? 'Inhabilitado' : 'Inhabilitar'}
-                      primary={daysNotAble}
-                      onClick={() => this.disable(id, daysNotAble)}
-                    />
-                  </TableRowColumn>
+        <Paper className={classes.calendarTableRoot}>
+          <TableContainer className={classes.calendarTableContainer}>
+            <Table stickyHeader>
+              <TableHead displaySelectAll={false} adjustForCheckbox={false}>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Inspections left</TableCell>
+                  <TableCell>Enable</TableCell>
+                  <TableCell>Disable</TableCell>
                 </TableRow>
-              )) : null}
-          </TableBody>
-        </Table>
-        <Dialog
-          title="Inspector:"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        >
-            Dialog
-        </Dialog>
+              </TableHead>
+              <TableBody displayRowCheckbox={false}>
+                {formattedDate && props.calendar[formattedDate]
+                    ? availableInspectorsArray.map(({
+                                                      id, fullName, daysUnlimited, daysNotAble, maximumPerDay,
+                                                    }) => (
+                        <TableRow key={id}>
+                          <TableCell>
+                            {fullName}
+                          </TableCell>
+                          <TableCell>
+                            {!daysUnlimited && !daysNotAble ? maximumPerDay : null}
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                                color={daysUnlimited ? 'primary' : 'default'}
+                                onClick={() => enable(id, daysUnlimited)}
+                            > {daysUnlimited ? 'Always available' : 'Set as always available'}
+                            </Button>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                                color={daysNotAble ? 'primary' : 'default'}
+                                onClick={() => disable(id, daysNotAble)}
+                            > {daysNotAble ? 'Unavailable' : 'Set as unavailable'}
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                    )) : null}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       </div>
     );
-  }
-}
+};
 
 
 const mapStateToProps = (state) => ({

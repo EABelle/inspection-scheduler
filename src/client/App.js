@@ -4,10 +4,13 @@ import { Provider } from 'react-redux';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { cyan800 } from 'material-ui/styles/colors';
 import { withRouter } from 'react-router-dom';
-import AppBar from './components/AppBar';
-import Menu from './components/Menu';
+import TitleBar from './components/TitleBar';
+import Menu from "./components/Menu";
 import store from './store';
-import './App.css';
+import Cookies from 'universal-cookie';
+import { makeStyles } from "@material-ui/core/styles";
+import {CssBaseline} from "@material-ui/core";
+
 
 const theme = getMuiTheme({
   palette: {
@@ -16,36 +19,64 @@ const theme = getMuiTheme({
   },
 });
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menuIsOpen: false,
-    };
-    this.onToggleMenu = this.onToggleMenu.bind(this);
-  }
+const useStyles = makeStyles({
+    root: {
+        display: 'flex'
+    },
+    appContent: {
+        width: '100%'
+    }
+});
 
-  onToggleMenu() {
-    this.setState({
-      menuIsOpen: !this.state.menuIsOpen,
-    });
-  }
+const RoutedComponents = withRouter(({ location, history, children, ...props }) => {
+    const classes = useStyles(props);
 
-  render() {
-    const RouterAppBar = withRouter((props) => <AppBar {...props} />);
+    const pathname = location.pathname.split('/')
+      .find((path) => (
+          Object.keys(titles).find((titleKey) => (titleKey === path))
+      ));
 
-    return (
-      <Provider store={store}>
-        <MuiThemeProvider theme={theme}>
-          <div className="App">
-            <RouterAppBar onOpenMenu={this.onToggleMenu} />
-            <Menu open={this.state.menuIsOpen} onToggle={this.onToggleMenu} />
-            {this.props.children}
-          </div>
-        </MuiThemeProvider>
-      </Provider>
-    );
-  }
-}
+  const title = titles[pathname];
+  const cookies = new Cookies();
+
+  const [open, setOpen] = React.useState(true);
+  const onOpenMenu = () => { if (!open) setOpen(true); };
+  const onCloseMenu = () => { if (open) setOpen(false); };
+
+  return (
+        cookies.get('inspector_token')
+            ? (
+                <div className={classes.root}>
+                    <CssBaseline />
+                    <Menu isOpen={open} handleClose={onCloseMenu}/>
+                    <div className={classes.appContent}>
+                        <TitleBar menuIsOpen={open} history={history} title={title} onOpenMenu={onOpenMenu}/>
+                        {children}
+                    </div>
+                </div>
+            ) : <div>{children}</div>
+  )
+});
+
+const titles = {
+  calendar: 'Calendar',
+  inspections: 'Inspections',
+  inspectors: 'Inspectors',
+};
+
+const App = (props) => {
+
+  return (
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <div>
+          <RoutedComponents>
+            {props.children}
+          </RoutedComponents>
+        </div>
+      </MuiThemeProvider>
+    </Provider>
+  );
+};
 
 export default App;

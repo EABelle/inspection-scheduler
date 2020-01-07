@@ -8,7 +8,6 @@ const authMiddleware = require('../middlewares/auth');
 const apiKeyMiddleware = require('../middlewares/apiKey');
 
 api.get('', authMiddleware, CalendarController.get);
-api.get('/allAvailabilities', authMiddleware, CalendarController.getByIgnoreAvailability);
 api.get('/times', apiKeyMiddleware, CalendarController.getDaysOnly);
 
 module.exports = api;

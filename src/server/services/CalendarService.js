@@ -129,10 +129,10 @@ class CalendarService {
       const dateFrom = new Date();
       let inspectorsByDays = this.getInspectorsByDays(dateFrom, inspectors, onlyAvailable);
       if (onlyAvailable) {
-        inspectorsByDays = this.countAvailability(inspectorsByDays, inspections);
-      } else {
         inspectorsByDays = this.deleteUnavailableInspectors(inspectorsByDays, inspections);
         inspectorsByDays = this.deleteDaysWithNoInspectors(inspectorsByDays);
+      } else {
+        inspectorsByDays = this.countAvailability(inspectorsByDays, inspections);
       }
     return this.formatMonths(inspectorsByDays);
   }

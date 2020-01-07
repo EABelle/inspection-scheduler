@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+import { TextField, Button } from '@material-ui/core';
 import sha256 from 'sha256';
 import Cookies from 'universal-cookie';
 import { Redirect } from 'react-router-dom';
@@ -47,23 +46,20 @@ const Login = (props) => {
     }
 
     return (
-      <form>
+      <form noValidate autoComplete="off">
         <TextField
-          hintText="Username"
-          floatingLabelText="Username"
-          onChange={(event, newValue) => setUsername(newValue)}
+          label="username"
+          onChange={event => setUsername(event.target.value)}
           onKeyUp={handleKey}
         />
         <br />
         <TextField
-          type="password"
-          hintText="Password"
-          floatingLabelText="Password"
-          onChange={(event, newValue) => setPassword(newValue)}
+          label="password"
+          onChange={event => setPassword(event.target.value)}
           onKeyUp={handleKey}
         />
         <br />
-        <RaisedButton label="Login" primary style={style.button} onClick={performLogin} />
+          <Button color="primary" style={style.button} onClick={performLogin}>Login</Button>
         { error ? <p style={style.error}>Invalid username or password</p> : null }
       </form>
     );
