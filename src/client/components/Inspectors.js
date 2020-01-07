@@ -1,16 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import Chip from 'material-ui/Chip';
+import { Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions, Paper, TableContainer, Table, TableHead, TableRow, TableBody, TableCell} from '@material-ui/core';
 import { uniq } from 'lodash';
 import { fetchInspectors } from '../actions/inspectors';
 
@@ -45,124 +35,120 @@ function getDay(index) {
   }
 }
 
-class Inspectors extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.state = {
-      open: false,
-      selectedInspector: null,
-    };
-  }
+const Inspectors = (props) => {
 
-  componentDidMount() {
-    this.props.fetchInspectors();
-  }
+  const [ open, setOpen ] = React.useState(false);
+  const [ selectedInspector, selectInspector ] = React.useState(null);
 
-  getDateDetail(inspector) {
-    return <span onClick={() => this.handleOpen(inspector)}>view details</span>;
-  }
+  React.useEffect(props.fetchInspectors, [null]);
 
-  handleOpen(selectedInspector) {
-    this.setState({ open: true, selectedInspector });
-  }
+  const handleOpen = selectedInspector => {
+    setOpen(true);
+    selectInspector(selectedInspector);
+  };
 
-  handleClose() {
-    this.setState({ open: false, selectedInspector: null });
-  }
+  const getDateDetail = (inspector) => <span onClick={() => handleOpen(inspector)}>view details</span>;
 
-  render() {
-    const actions = [
-      <FlatButton
-        label="Cerrar"
-        primary
-        onClick={this.handleClose}
-      />,
-    ];
+  const handleClose = () => {
+    setOpen(false);
+    selectInspector(null);
+  };
 
-    return (
-      <div>
-        <Table>
-          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow>
-              <TableHeaderColumn>Full name</TableHeaderColumn>
-              <TableHeaderColumn>Working days</TableHeaderColumn>
-              <TableHeaderColumn>Maximum per day</TableHeaderColumn>
-              <TableHeaderColumn>Actions</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody displayRowCheckbox={false}>
-            {this.props.inspectors.map((inspector, index) => (
-              <TableRow key={index}>
-                <TableRowColumn>
-                  {inspector.fullName}
-                </TableRowColumn>
-                <TableRowColumn>
-                  {`${inspector.times.map(({ day }) => getDay(day)).join(', ')} `}
-                </TableRowColumn>
-                <TableRowColumn>
-                  {inspector.maximumPerDay}
-                  {' inspections'}
-                </TableRowColumn>
-                <TableRowColumn>
-                  {this.getDateDetail(inspector)}
-                </TableRowColumn>
+  const Actions = () => [
+    <Button
+      color="primary"
+      onClick={handleClose}
+    >Close</Button>,
+  ];
+
+  return (
+    <div>
+      <Paper>
+        <TableContainer>
+          <Table>
+            <TableHead displaySelectAll={false} adjustForCheckbox={false}>
+              <TableRow>
+                <TableCell>Full name</TableCell>
+                <TableCell>Working days</TableCell>
+                <TableCell>Maximum per day</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Dialog
-          title={`Inspector: ${this.state.selectedInspector ? this.state.selectedInspector.fullName : null}`}
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-          autoScrollBodyContent
-        >
-          { !this.state.selectedInspector ? null : (
-            <div>
-              <Table>
-                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                  <TableRow>
-                    <TableHeaderColumn>Día</TableHeaderColumn>
-                    <TableHeaderColumn>Horario</TableHeaderColumn>
+            </TableHead>
+            <TableBody displayRowCheckbox={false}>
+              {props.inspectors.map((inspector, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      {inspector.fullName}
+                    </TableCell>
+                    <TableCell>
+                      {`${inspector.times.map(({ day }) => getDay(day)).join(', ')} `}
+                    </TableCell>
+                    <TableCell>
+                      {inspector.maximumPerDay}
+                      {' inspections'}
+                    </TableCell>
+                    <TableCell>
+                      {getDateDetail(inspector)}
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody displayRowCheckbox={false}>
-                  {this.state.selectedInspector.times.map(({ day, range }) => (
-                    <TableRow key={day}>
-                      <TableRowColumn>
-                        {getDay(day)}
-                      </TableRowColumn>
-                      <TableRowColumn>
-                        {`de ${range.start} a ${range.end} hs`}
-                      </TableRowColumn>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <h3>Locations</h3>
-              <div style={styles.chipsWrapper}>
-                {
-                    uniq(this.state.selectedInspector.locations).sort().map((location) => (
-                      <Chip
-                        key={location}
-                        style={styles.chip}
-                        onRequestDelete={() => {}}
-                      >
-                        {location}
-                      </Chip>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+      >
+        <DialogTitle>{`Inspector: ${selectedInspector ? selectedInspector.fullName : null}`}</DialogTitle>
+        <DialogContent>
+          { !selectedInspector ? null : (
+              <div>
+                <Paper>
+                  <TableContainer>
+                    <Table>
+                      <TableHead displaySelectAll={false} adjustForCheckbox={false}>
+                        <TableRow>
+                          <TableCell>Día</TableCell>
+                          <TableCell>Horario</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody displayRowCheckbox={false}>
+                        {selectedInspector.times.map(({ day, range }) => (
+                            <TableRow key={day}>
+                              <TableCell>
+                                {getDay(day)}
+                              </TableCell>
+                              <TableCell>
+                                {`de ${range.start} a ${range.end} hs`}
+                              </TableCell>
+                            </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Paper>
+                <h3>Locations</h3>
+                <div style={styles.chipsWrapper}>
+                  {
+                    uniq(selectedInspector.locations).sort().map((location) => (
+                        <Chip
+                            key={location}
+                            style={styles.chip}
+                            label={location}
+                            variant="outlined"
+                        />
                     ))
-                }
+                  }
+                </div>
               </div>
-            </div>
           )}
-        </Dialog>
-      </div>
-    );
-  }
-}
+        </DialogContent>
+        <DialogActions><Actions /></DialogActions>
+      </Dialog>
+    </div>
+  );
+};
 
 
 const mapStateToProps = (state) => ({

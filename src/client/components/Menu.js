@@ -1,7 +1,6 @@
 import React from 'react';
 import { Drawer, Divider } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import './Menu.css';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';

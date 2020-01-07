@@ -1,8 +1,5 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Provider } from 'react-redux';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { cyan800 } from 'material-ui/styles/colors';
 import { withRouter } from 'react-router-dom';
 import TitleBar from './components/TitleBar';
 import Menu from "./components/Menu";
@@ -10,14 +7,6 @@ import store from './store';
 import Cookies from 'universal-cookie';
 import { makeStyles } from "@material-ui/core/styles";
 import {CssBaseline} from "@material-ui/core";
-
-
-const theme = getMuiTheme({
-  palette: {
-    primary1Color: cyan800,
-    primary2Color: cyan800,
-  },
-});
 
 const useStyles = makeStyles({
     root: {
@@ -68,13 +57,11 @@ const App = (props) => {
 
   return (
     <Provider store={store}>
-      <MuiThemeProvider theme={theme}>
         <div>
           <RoutedComponents>
             {props.children}
           </RoutedComponents>
         </div>
-      </MuiThemeProvider>
     </Provider>
   );
 };

@@ -1,111 +1,98 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { connect } from 'react-redux';
+import DateFnsUtils from '@date-io/date-fns';
 import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import DatePicker from 'material-ui/DatePicker';
+  MuiPickersUtilsProvider,
+  DatePicker,
+} from '@material-ui/pickers';
+import { makeStyles } from '@material-ui/core/styles';
+import { Paper, TableContainer, Table, TableHead, TableRow, TableBody, TableCell} from '@material-ui/core';
 import { fetchInspections } from '../actions/inspections';
 
-const styles = {
-  datePicker: {
-    maxWidth: 300,
-  },
-};
+export const Inspections = (props) => {
+  const date = new Date(Date.now());
+  const [ day, setDay ] = useState(date.getDate());
+  const [ month, setMonth ] = useState(date.getMonth() + 1);
+  const [ year, setYear] = useState(date.getFullYear());
+  const [selectedDate, selectDate] = React.useState(date);
 
-export class Inspections extends React.Component {
-  constructor() {
-    super();
-    this.currentDate = new Date();
-    this.state = {
-      day: this.currentDate.getDate(),
-      month: this.currentDate.getMonth() + 1,
-      year: this.currentDate.getFullYear(),
-    };
-    this.handleChangeDate = this.handleChangeDate.bind(this);
-    this.fetchInspections = this.fetchInspections.bind(this);
-  }
+  const fetchInspections = () => {
+    props.fetchInspections({ day, month, year });
+  };
 
-  componentDidMount() {
-    this.fetchInspections();
-  }
+  React.useEffect(fetchInspections, [null]);
 
-  handleChangeDate(event, date) {
-    this.setState({
-      day: date.getDate(),
-      month: date.getMonth() + 1,
-      year: date.getFullYear(),
-    }, () => {
-      this.fetchInspections();
-    });
-  }
+  const handleDateChange = (date) => {
+    setDay(date.getDate());
+    setMonth(date.getMonth() + 1);
+    setYear(date.getFullYear());
+    selectDate(date);
+    fetchInspections();
+  };
 
-  fetchInspections() {
-    this.props.fetchInspections({ day: this.state.day, month: this.state.month, year: this.state.year });
-  }
-
-  render() {
     return (
       <div style={{ textAlign: 'left', padding: 16 }}>
-        <DatePicker
-          floatingLabelText="Date"
-          autoOk
-          onChange={this.handleChangeDate}
-          style={styles.datePicker}
-          defaultDate={this.currentDate}
-        />
-        <Table>
-          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow>
-              <TableHeaderColumn>Owner</TableHeaderColumn>
-              <TableHeaderColumn>Domain</TableHeaderColumn>
-              <TableHeaderColumn>Vehicle</TableHeaderColumn>
-              <TableHeaderColumn>Adress</TableHeaderColumn>
-              <TableHeaderColumn>City</TableHeaderColumn>
-              <TableHeaderColumn>Time range</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody displayRowCheckbox={false} stripedRows style={{ cursor: 'pointer' }}>
-            {
-                  this.props.inspections
-                    ? this.props.inspections.map(({
-                      _id, owner, vehicle, date,
-                    }) => {
-                      const hours = (new Date(date)).getHours();
-                      return (
-                        <TableRow key={_id}>
-                          <TableRowColumn>
-                            {`${owner.lastName}, ${owner.firstName}`}
-                          </TableRowColumn>
-                          <TableRowColumn>
-                            {vehicle.domain}
-                          </TableRowColumn>
-                          <TableRowColumn>
-                            {`${vehicle.brand} ${vehicle.model}`}
-                          </TableRowColumn>
-                          <TableRowColumn>
-                            {`${vehicle.brand} ${vehicle.model}`}
-                          </TableRowColumn>
-                          <TableRowColumn>
-                            {`${vehicle.brand} ${vehicle.model}`}
-                          </TableRowColumn>
-                          <TableRowColumn>
-                            {`${hours} to ${hours + 3}`}
-                          </TableRowColumn>
-                        </TableRow>
-                      );
-                    })
-                    : 'No inspections found'
-              }
-          </TableBody>
-        </Table>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <DatePicker
+              emptyLabel="Date"
+              autoOk
+              onChange={handleDateChange}
+              //className={}
+              value={selectedDate}
+              variant="inline"
+          />
+        </MuiPickersUtilsProvider>
+        <Paper>
+          <TableContainer>
+            <Table>
+              <TableHead displaySelectAll={false} adjustForCheckbox={false}>
+                <TableRow>
+                  <TableCell>Owner</TableCell>
+                  <TableCell>Domain</TableCell>
+                  <TableCell>Vehicle</TableCell>
+                  <TableCell>Address</TableCell>
+                  <TableCell>City</TableCell>
+                  <TableCell>Time range</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody displayRowCheckbox={false} stripedRows style={{ cursor: 'pointer' }}>
+                {
+                  props.inspections
+                      ? props.inspections.map(({
+                                                      _id, owner, vehicle, date,
+                                                    }) => {
+                        const hours = (new Date(date)).getHours();
+                        return (
+                            <TableRow key={_id}>
+                              <TableCell>
+                                {`${owner.lastName}, ${owner.firstName}`}
+                              </TableCell>
+                              <TableCell>
+                                {vehicle.domain}
+                              </TableCell>
+                              <TableCell>
+                                {`${vehicle.brand} ${vehicle.model}`}
+                              </TableCell>
+                              <TableCell>
+                                {`${vehicle.brand} ${vehicle.model}`}
+                              </TableCell>
+                              <TableCell>
+                                {`${vehicle.brand} ${vehicle.model}`}
+                              </TableCell>
+                              <TableCell>
+                                {`${hours} to ${hours + 3}`}
+                              </TableCell>
+                            </TableRow>
+                        );
+                      })
+                      : 'No inspections found'
+                }
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       </div>
     );
-  }
 }
 
 const mapStateToProps = (state) => ({
