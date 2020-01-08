@@ -45,4 +45,4 @@ const TitleBar = ({ title, history, onOpenMenu, menuIsOpen }) => {
   );
 };
 
-export default TitleBar;
+export default React.memo(TitleBar);

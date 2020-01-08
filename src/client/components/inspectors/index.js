@@ -61,4 +61,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Inspectors);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Inspectors));

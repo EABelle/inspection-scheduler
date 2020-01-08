@@ -78,4 +78,4 @@ const Menu = ({isOpen, handleClose}) => {
     );
 };
 
-export default Menu;
+export default React.memo(Menu);

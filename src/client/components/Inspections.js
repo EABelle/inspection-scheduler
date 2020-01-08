@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const Inspections = (props) => {
+export const Inspections = React.memo((props) => {
   const classes = useStyles();
   const date = new Date(Date.now());
   const [ day, setDay ] = useState(date.getDate());
@@ -112,7 +112,7 @@ export const Inspections = (props) => {
         </Paper>
       </div>
     );
-}
+});
 
 const mapStateToProps = (state) => ({
   inspections: state.inspections,

@@ -39,9 +39,9 @@ export const makeInspectorDialogState = () => {
     };
     const InspectorDetailButton = ({inspector}) => <Button color="primary" onClick={() => handleOpen(inspector)}>View details</Button>;
     return {open, selectedInspector, handleClose, InspectorDetailButton };
-}
+};
 
-export const InspectorDialog = ({selectedInspector, handleClose, open}) => (
+export const InspectorDialog = React.memo(({selectedInspector, handleClose, open}) => (
     <Dialog
         open={open}
         onClose={handleClose}
@@ -94,4 +94,4 @@ export const InspectorDialog = ({selectedInspector, handleClose, open}) => (
             <Button color="primary" onClick={handleClose}>Close</Button>
         </DialogActions>
     </Dialog>
-)
+));
