@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import App from './client/App';
 import registerServiceWorker from './client/registerServiceWorker';
-import Inspectors from './client/components/Inspectors';
+import Inspectors from './client/components/inspectors';
 import Calendar from './client/components/Calendar';
 import Inspections from './client/components/Inspections';
 import Login from './client/components/Login';

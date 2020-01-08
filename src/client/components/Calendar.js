@@ -9,16 +9,18 @@ import {
 } from '@material-ui/pickers';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
-import {Button, Paper, TableContainer, Table, TableHead, TableRow, TableBody, TableCell} from '@material-ui/core';
+import { Paper, TableContainer, Table, TableHead, TableRow, TableBody, TableCell } from '@material-ui/core';
+import {InspectorDialog, makeInspectorDialogState} from "./inspectors/InspectorDialog";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   calendar: {
     padding: 16,
   },
   filters: {
     display: 'flex',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingBottom: 12
   },
   toggle: {
     marginBottom: 16,
@@ -31,9 +33,42 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-block',
   },
   toggleLabel: {
+    marginLeft: 24,
     marginRight: 16
+  },
+  status: {
+    width: 130,
+    backgroundColor: 'green'
+  },
+  statusContainer: {
+    width: 137,
+    height: 32,
+    borderRadius: 6,
+    textAlign: 'center',
+    verticalAlign: 'middle',
+    fontWeight: 'bold',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  enabled: {
+    backgroundColor: '#d8efe0',
+    color: '#179ea4',
+  },
+  disabled: {
+    backgroundColor: '#fcd9da',
+    color: '#f03d44',
   }
 }));
+
+function getMinAndMaxDate() {
+  const minDate = new Date();
+  minDate.setHours(0, 0, 0, 0);
+  const maxDate = new Date();
+  maxDate.setDate(minDate.getDate() + 5);
+  maxDate.setHours(0, 0, 0, 0);
+  return [minDate, maxDate];
+}
 
 const Calendar = (props) => {
   const classes = useStyles();
@@ -43,16 +78,13 @@ const Calendar = (props) => {
   const [ year, setYear] = useState(date.getFullYear());
   const [ onlyAvailableInspectors, setOnlyAvailableInspectors ] = useState(false);
 
-  const minDate = new Date();
-  minDate.setHours(0, 0, 0, 0);
-  const maxDate = new Date();
-  maxDate.setDate(minDate.getDate() + 5);
-  maxDate.setHours(0, 0, 0, 0);
+  const [ minDate, maxDate ] = getMinAndMaxDate();
 
   const fetchCalendar = () => {
     props.fetchCalendar({ onlyAvailableInspectors });
   };
   React.useEffect(fetchCalendar, [onlyAvailableInspectors]);
+  const {open, selectedInspector, handleClose, InspectorDetailButton } = makeInspectorDialogState();
 
   const handleDateChange = (date) => {
     setDay(date.getDate());
@@ -65,24 +97,19 @@ const Calendar = (props) => {
     setOnlyAvailableInspectors(!onlyAvailableInspectors);
   };
 
-  const enable = async (inspectorId, isSet) => {
+  const handleStatusChange = async (inspectorId, action, daysNotAble, daysUnlimited) => {
     const date = [day, month, year].join('|');
-    if (isSet) {
+    if (daysNotAble || daysUnlimited) {
       await restoreCustomDate(inspectorId, date);
-    } else {
-      await setEnableProp(inspectorId, date);
     }
-    await fetchCalendar();
-  };
-
-  const disable = async (inspectorId, isSet) => {
-    const date = [day, month, year].join('|');
-    if (isSet) {
-      await restoreCustomDate(inspectorId, date);
-    } else {
+    await restoreCustomDate(inspectorId, date);
+    if (action === 'DISABLED') {
       await setDisableProp(inspectorId, date);
     }
-    await fetchCalendar();
+    if (action === 'ENABLED') {
+      await setEnableProp(inspectorId, date);
+    }
+    fetchCalendar();
   };
 
     const formattedDate = day && month && year ? `${day}|${month}|${year}` : null;
@@ -96,6 +123,24 @@ const Calendar = (props) => {
 
     const [selectedDate, selectDate] = React.useState(minDate);
 
+    const getStatus = inspector => {
+      if (inspector.daysNotAble) {
+        return 'DISABLED';
+      }
+      if (inspector.daysUnlimited) {
+        return 'ENABLED';
+      }
+      return 'COUNT';
+    };
+
+    const getStatusLabel = inspector => {
+      const disabled = inspector.daysNotAble || !inspector.maximumPerDay;
+      return (<div className={`${classes.statusContainer} ${disabled ? classes.disabled : classes.enabled}`}>{
+          disabled
+            ? <div className={classes.disabled}>Disabled</div>
+            : <div>Enabled</div>
+      }</div>)
+    };
 
     return (
       <div className={classes.calendar}>
@@ -114,7 +159,7 @@ const Calendar = (props) => {
           </MuiPickersUtilsProvider>
 
           <div className={classes.toggleContainer}>
-            <label className={classes.toggleLabel}>Only available inspectors</label>
+            <label className={classes.toggleLabel}>Only available inspectors:</label>
             <ToggleButtonGroup exclusive value={onlyAvailableInspectors} onChange={handleToggle}>
               <ToggleButton value={true}>
                 YES
@@ -133,35 +178,41 @@ const Calendar = (props) => {
                 <TableRow>
                   <TableCell>Name</TableCell>
                   <TableCell>Inspections left</TableCell>
-                  <TableCell>Enable</TableCell>
-                  <TableCell>Disable</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Count</TableCell>
+                  <TableCell>View details</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody displayRowCheckbox={false}>
                 {formattedDate && props.calendar[formattedDate]
-                    ? availableInspectorsArray.map(({
-                                                      id, fullName, daysUnlimited, daysNotAble, maximumPerDay,
-                                                    }) => (
-                        <TableRow key={id}>
+                    ? availableInspectorsArray
+                        .map(inspector => (
+                        <TableRow key={inspector.id}>
                           <TableCell>
-                            {fullName}
+                            {inspector.fullName}
                           </TableCell>
                           <TableCell>
-                            {!daysUnlimited && !daysNotAble ? maximumPerDay : null}
+                            {!inspector.daysUnlimited && !inspector.daysNotAble ? inspector.maximumPerDay : '-'}
                           </TableCell>
                           <TableCell>
-                            <Button
-                                color={daysUnlimited ? 'primary' : 'default'}
-                                onClick={() => enable(id, daysUnlimited)}
-                            > {daysUnlimited ? 'Always available' : 'Set as always available'}
-                            </Button>
+                            {getStatusLabel(inspector)}
                           </TableCell>
                           <TableCell>
-                            <Button
-                                color={daysNotAble ? 'primary' : 'default'}
-                                onClick={() => disable(id, daysNotAble)}
-                            > {daysNotAble ? 'Unavailable' : 'Set as unavailable'}
-                            </Button>
+                            <ToggleButtonGroup
+                                size="small"
+                                exclusive
+                                value={getStatus(inspector)}
+                                onChange={(_event, value) =>
+                                    handleStatusChange(inspector.id, value, inspector.daysNotAble, inspector.daysUnlimited)
+                                }
+                            >
+                              <ToggleButton key={`${inspector.id}_count`} value='COUNT'>Yes</ToggleButton>
+                              <ToggleButton key={`${inspector.id}_enable`} value='ENABLED'>No</ToggleButton>
+                              <ToggleButton key={`${inspector.id}_disable`} value='DISABLED'>Disable</ToggleButton>
+                            </ToggleButtonGroup>
+                          </TableCell>
+                          <TableCell>
+                            <InspectorDetailButton inspector={inspector} />
                           </TableCell>
                         </TableRow>
                     )) : null}
@@ -169,6 +220,7 @@ const Calendar = (props) => {
             </Table>
           </TableContainer>
         </Paper>
+        <InspectorDialog handleClose={handleClose} selectedInspector={selectedInspector} open={open} />
       </div>
     );
 };

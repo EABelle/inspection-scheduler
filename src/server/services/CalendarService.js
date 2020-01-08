@@ -1,6 +1,6 @@
 
 const {
-  pick, isEmpty, unset, uniq, flatten,
+  isEmpty, unset, uniq, flatten,
 } = require('lodash');
 const {
   formatDate, matchDate, buildDate, transformDateString,
@@ -30,13 +30,11 @@ class CalendarService {
             && inspector.times.find((dayData) => (dayData.day === dayOfTheWeek))
         ) {
           inspectorsOfTheDay[inspector._id] = {
+            ...inspector,
             daysNotAble: !!inspector.daysNotAble.find((date) => matchDate(formatDate(date), formattedDate)),
             daysUnlimited: !!inspector.daysUnlimited.find(
               (date) => matchDate(formatDate(date), formattedDate),
-            ),
-            ...pick(
-              inspector, ['fullName', 'maximumPerDay'],
-            ),
+            )
           };
         }
       });

@@ -6,7 +6,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
-    flexGrow: 1,
+    zIndex: theme.zIndex.drawer + 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -27,8 +27,7 @@ const TitleBar = ({ title, history, onOpenMenu, menuIsOpen }) => {
   const classes = useStyles();
 
   return (
-      <div className={classes.appBar}>
-        <AppBar position="static">
+        <AppBar className={classes.appBar} position="fixed">
           <Toolbar>
             {
               menuIsOpen ? null : (
@@ -43,7 +42,6 @@ const TitleBar = ({ title, history, onOpenMenu, menuIsOpen }) => {
             <Button color="inherit" onClick={onLogout}>Logout</Button>
           </Toolbar>
         </AppBar>
-      </div>
   );
 };
 

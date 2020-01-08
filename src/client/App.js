@@ -8,14 +8,16 @@ import Cookies from 'universal-cookie';
 import { makeStyles } from "@material-ui/core/styles";
 import {CssBaseline} from "@material-ui/core";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex'
     },
     appContent: {
-        width: '100%'
-    }
-});
+        flexGrow: 1,
+        padding: theme.spacing(3),
+    },
+    toolbar: theme.mixins.toolbar,
+}));
 
 const RoutedComponents = withRouter(({ location, history, children, ...props }) => {
     const classes = useStyles(props);
@@ -37,13 +39,14 @@ const RoutedComponents = withRouter(({ location, history, children, ...props }) 
             ? (
                 <div className={classes.root}>
                     <CssBaseline />
+                    <TitleBar menuIsOpen={open} history={history} title={title} onOpenMenu={onOpenMenu}/>
                     <Menu isOpen={open} handleClose={onCloseMenu}/>
-                    <div className={classes.appContent}>
-                        <TitleBar menuIsOpen={open} history={history} title={title} onOpenMenu={onOpenMenu}/>
+                    <main className={classes.appContent}>
+                        <div className={classes.toolbar} />
                         {children}
-                    </div>
+                    </main>
                 </div>
-            ) : <div>{children}</div>
+            ) : children
   )
 });
 
@@ -57,11 +60,9 @@ const App = (props) => {
 
   return (
     <Provider store={store}>
-        <div>
           <RoutedComponents>
             {props.children}
           </RoutedComponents>
-        </div>
     </Provider>
   );
 };

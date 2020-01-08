@@ -9,7 +9,24 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Paper, TableContainer, Table, TableHead, TableRow, TableBody, TableCell} from '@material-ui/core';
 import { fetchInspections } from '../actions/inspections';
 
+const useStyles = makeStyles(() => ({
+  inspections: {
+    padding: 16,
+  },
+  filters: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingBottom: 12
+  },
+  datePicker: {
+    maxWidth: 300,
+    display: 'inline-block',
+  },
+}));
+
 export const Inspections = (props) => {
+  const classes = useStyles();
   const date = new Date(Date.now());
   const [ day, setDay ] = useState(date.getDate());
   const [ month, setMonth ] = useState(date.getMonth() + 1);
@@ -31,17 +48,19 @@ export const Inspections = (props) => {
   };
 
     return (
-      <div style={{ textAlign: 'left', padding: 16 }}>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DatePicker
-              emptyLabel="Date"
-              autoOk
-              onChange={handleDateChange}
-              //className={}
-              value={selectedDate}
-              variant="inline"
-          />
-        </MuiPickersUtilsProvider>
+      <div className={classes.inspections}>
+        <div className={classes.filters}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePicker
+                emptyLabel="Date"
+                autoOk
+                onChange={handleDateChange}
+                className={classes.datePicker}
+                value={selectedDate}
+                variant="inline"
+            />
+          </MuiPickersUtilsProvider>
+        </div>
         <Paper>
           <TableContainer>
             <Table>
