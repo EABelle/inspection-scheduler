@@ -60,9 +60,9 @@ const App = (props) => {
 
   return (
     <Provider store={store}>
-          <RoutedComponents>
-            {props.children}
-          </RoutedComponents>
+      <RoutedComponents>
+        {props.children}
+      </RoutedComponents>
     </Provider>
   );
 };

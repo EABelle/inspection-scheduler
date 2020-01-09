@@ -4,20 +4,31 @@ import sha256 from 'sha256';
 import Cookies from 'universal-cookie';
 import { Redirect } from 'react-router-dom';
 import { login } from '../api/login';
+import Car from '../images/car.png';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles( theme => ({
+  title: {
+    color: theme.palette.text
+  },
   loginContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%'
+    flexDirection: 'column',
+    height: '100%',
+    position: 'absolute',
+    top:0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: 'auto'
   },
   loginForm: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
   }
-});
+}));
 
 const cookies = new Cookies();
 
@@ -62,6 +73,8 @@ const Login = (props) => {
 
   return (
       <div className={classes.loginContainer}>
+        <img src={Car} alt="CarLogo" width={150} height={150} />
+        <h3 className={classes.title}>My Inspections</h3>
         <form noValidate autoComplete="off" className={classes.loginForm}>
           <TextField
               label="username"
