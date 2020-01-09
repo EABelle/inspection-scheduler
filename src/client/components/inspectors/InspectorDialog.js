@@ -30,7 +30,6 @@ export const makeInspectorDialogState = () => {
     const [ selectedInspector, selectInspector ] = React.useState(null);
     const handleOpen = selectedInspector => {
         setOpen(true);
-        console.log(selectedInspector);
         selectInspector(selectedInspector);
     };
     const handleClose = () => {
