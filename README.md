@@ -1,40 +1,40 @@
 # API AGENDA
 
-*Interfaz del sistema para la consulta y carga de pedidos de inspección.*
+This are the docs for the API endpoints to query available dates and times provided by an inspections company, and to book new inspection requests.
 
-## Uso
+## Use
 
-Expone dos endpoints; uno para consultar la disponibilidad para realizar la inspección por parte del estudio, según la zona en la que se realizará, y otro para schedule la inspección.
+Exposes two endpoins; one to query the date and time availabilities according to a gegraphic location, and the other one to book the inspection.
 
-*Las url's base de cada ambiente y las api keys serán provistas por el estudio.*
+*You need to be provided with an API key*
 
 ## Endpoints
 
 ### {{baseUrl}}/calendar/times?location=:location&cp=:cp
 
-#### Método: GET
+#### Method: GET
 
 #### Headers:
-  - **x-api-key**: Provisto por el estudio
+  - **x-api-key**: An API key provided
 
 #### Params
-Se debe enviar al menos uno de los dos:
-  - **location**
-  - **cp**
+At least one of the two followings:
+  - **location**: A city name
+  - **zipCode**: A zip code 
 
-#### Respuesta:
-Devuelve los días que el estudio tiene disponible para cubrir la inspección en la zona provista, dentro de los próximos 5 días a partir de la consulta, con sus franjas horarias. Las franjas horarias pertenecientes a cada día son de 3 horas.
+#### Response:
+Returns the days which the company has available to make the inspection at the provided location, within the next five days with their time ranges. The time ranges are three hours long.
 
-**Formato:** JSON
+**Format:** JSON
 
-*Ejemplo del body de una respuesta:*
+*Example of a response body:*
 
 ```js
 {
     "data": {
         "7|8|2018": [
             {
-                "min": 8, // number - representa la hora sin minutos.
+                "min": 8, // number - time without minutes (only hours).
                 "max": 11
             },
             {
@@ -68,7 +68,7 @@ Devuelve los días que el estudio tiene disponible para cubrir la inspección en
 
 #### Request headers:
   - **Content-Type**: application/json
-  - **x-api-key**: Provista por el estudio
+  - **x-api-key**: Provided
 
 Request body:
 
@@ -80,13 +80,13 @@ Request body:
     	"phone1": number, // *MANDATORY*
     	"phone2": number
     },
-    "inspection": {
+    "meetingDetails": {
     	"address": string, // *MANDATORY*
-    	"city": string, // *optional* en caso de que sea provisto el código postal
-		"zipCode": string, // *opcional* en caso de que sea provista la location
+    	"city": string, // *optional* in case a zip code is provided
+	"zipCode": string, // *optional* in case a city name is provided
     	"workingArea": string,
-    	"date": "DD|MM|AAAA", date
-    	"time": string // *MANDATORY* la fecha inicial, sin minutos
+    	"date": "DD|MM|YYYY", date
+    	"time": string // *MANDATORY* starting time (hours without minutes)
     },
     "vehicle": {
     	"domain": string, // *MANDATORY*
